@@ -83,11 +83,28 @@ a:hover {
     font-weight: bold;
     border-radius: 8px;
     border: 3px solid black;
-    box-shadow: 3px 3px 0px black;
+    box-shadow: 4px 4px 0px black;
     transition: 0.3s;
     font-size: 24px;
 }
 
 .buttonDiv > button:hover {
-    background-color: pink;
+    cursor: pointer;
+    box-shadow: 9px 9px 0px black;
+}
+
+#bookNow {
+    background-color: #bc77d1;
+}
+
+#bookNow:hover {
+    background-color: transparent;
+}
+
+#learnMore {
+    background-color: white;
+}
+
+#learnMore:hover {
+    background-color: transparent;
 }

@@ -12,13 +12,17 @@ export default function Main() {
                     <a href="register">Sign Up</a>
                 </div>
             </nav>
-
-            <div id="mainSplash">
-                <h1>Booking Reimagined.</h1> 
-                <p>Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut</p>
-                <div className="buttonDiv">
-                    <button>Book Now</button>
-                    <button>Learn More</button>
+            <div style={{display: 'flex', flexDirection: 'row'}}>
+                <div id="mainSplash">
+                    <h1>Booking Reimagined.</h1> 
+                    <p>Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut</p>
+                    <div className="buttonDiv">
+                        <button id="bookNow">Book Now</button>
+                        <button id="learnMore">Learn More</button>
+                    </div>
+                </div>
+                <div style={{height: 'inherit', justifyContent: 'center', alignItems: 'center', display: 'flex', width: '50%'}}>
+                    <img height={280} width={400} alt="Some graphic here" style={{border: '1px solid black'}}></img>
                 </div>
             </div>
         </main>
