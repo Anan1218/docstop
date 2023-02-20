@@ -1,10 +1,12 @@
 import React from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import { purple } from '@mui/material/colors';
+import { useNavigate } from 'react-router-dom'
 
 const primary = purple[500]; // #f44336
 
-export default function notFound() {
+export default function NotFound() {
+  const navigate = useNavigate();
   return (
     <Box
       sx={{
@@ -22,7 +24,9 @@ export default function notFound() {
       <Typography variant="h6" style={{ color: 'white' }}>
         The page you’re looking for doesn’t exist.
       </Typography>
-      <Button variant="contained">Back Home</Button>
+      <Button variant="contained" onClick={() => {navigate("/");}}> 
+          Back Home
+      </Button>
     </Box>
   );
 }

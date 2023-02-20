@@ -1,0 +1,110 @@
+* {
+    margin: 0;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: black;
+    height: 100%;
+}
+
+main.page {
+    background-image: linear-gradient(0.17turn, #bc77d1, #eda164, #ed646a);
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+}
+
+h1 {
+    text-align: center;
+}
+
+.navLink {
+    text-decoration: none;
+    color: inherit;
+    padding: 15px;
+    transition: 0.3s;
+    border: 1px solid transparent;
+    font-weight: bold;
+}
+
+.navLink:hover {
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+}
+
+#root {
+    height: 100%;
+}
+
+#navBar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f0f7f4;
+    border-bottom: 4px solid black;
+    margin-bottom: 60px;
+}
+
+#mainSplash {
+    width: 50%;
+    padding: 40px;
+    font-weight: bold;
+}
+
+#mainSplash > h1 {
+    font-size: 80px;
+}
+
+#mainSplash > p {
+    font-size: 25px;
+}
+
+#mainSplash > .buttonDiv {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.buttonDiv > button {
+    width: 50%;
+    margin-block: 20px;
+    padding-block: 20px;
+    margin-inline: 50px;
+    font-weight: bold;
+    border-radius: 8px;
+    border: 3px solid black;
+    box-shadow: 4px 4px 0px black;
+    transition: 0.3s;
+    font-size: 24px;
+}
+
+.buttonDiv > button:hover {
+    cursor: pointer;
+    box-shadow: 9px 9px 0px black;
+}
+
+#bookNow {
+    background-color: #bc77d1;
+}
+
+#bookNow:hover {
+    background-color: transparent;
+}
+
+#learnMore {
+    background-color: white;
+}
+
+#learnMore:hover {
+    background-color: transparent;
+}
