@@ -9,7 +9,7 @@ export default function Main() {
                 <div style={{display: 'flex', justifyContent: 'space-evenly', width: 500, fontSize: 30}}>
                     <a className="navLink" href="about">About</a>
                     <a className="navLink" href="contact">Contact</a>
-                    <a className="navLink" href="register">Sign Up</a>
+                    <a className="navLink" href="/signup">Sign Up</a>
                 </div>
             </nav>
             <div style={{display: 'flex', flexDirection: 'row'}}>
