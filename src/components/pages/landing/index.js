@@ -3,7 +3,7 @@ import "./index.css"
 
 export default function Main() {
     return (
-        <main>
+        <main className="page">
             <nav id="navBar">
                 <a href="/" className="navLink" style={{marginLeft: 50, fontSize: 59}}>DentalSite</a>
                 <div style={{display: 'flex', justifyContent: 'space-evenly', width: 500, fontSize: 30}}>
