@@ -15,7 +15,7 @@ body {
     height: 100%;
 }
 
-main {
+main.page {
     background-image: linear-gradient(0.17turn, #bc77d1, #eda164, #ed646a);
     background-size: cover;
     background-repeat: no-repeat;
