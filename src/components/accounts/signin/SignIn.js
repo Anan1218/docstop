@@ -31,12 +31,35 @@ export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
+
+    const postData = {
+      nameOrEmail: data.get('nameOrEmail'),
       password: data.get('password'),
-    });
+    };
+
+    fetch('http://localhost:8080/api/auth/login', { 
+    method: 'POST', 
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include',
+    body: JSON.stringify(postData)}).then(dt => console.log(dt.json()))
   };
 
+  const handleClickTest = () => {
+    fetch('http://localhost:8080/api/auth/info', { 
+    method: 'GET', 
+    credentials: 'include',
+    }).then(dt => console.log(dt.json()))
+  };
+
+  const handleClickLogOut = () => {
+    fetch('http://localhost:8080/api/auth/logout', { 
+    method: 'GET', 
+    credentials: 'include',
+    }).then(console.log("logout success"))
+  };
+  
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -59,9 +82,9 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
+              id="nameOrEmail"
+              label="Email Address / Username"
+              name="nameOrEmail"
               autoComplete="email"
               autoFocus
             />
@@ -87,6 +110,22 @@ export default function SignIn() {
             >
               Sign In
             </Button>
+            <Button
+              onClick={handleClickTest}
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Test to get user info
+            </Button>
+            <Button
+              onClick={handleClickLogOut}
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Log Out
+            </Button>
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
@@ -94,7 +133,7 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="/" variant="body2">
+                <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
