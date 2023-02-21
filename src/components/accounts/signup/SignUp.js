@@ -31,10 +31,18 @@ export default function SignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const postData = {
       email: data.get('email'),
       password: data.get('password'),
-    });
+      name: data.get('firstName'),
+      phoneNumber: data.get('phoneNumber')
+    };
+
+    fetch('http://localhost:8080/api/auth/signup', { method: 'POST', headers: {
+      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },body: JSON.stringify(postData)}).then(dt => console.log(dt.json()))
+
   };
 
   return (
