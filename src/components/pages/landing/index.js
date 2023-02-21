@@ -5,7 +5,7 @@ export default function Main() {
     return (
         <main className="page">
             <nav id="navBar">
-                <a href="/" className="navLink" style={{marginLeft: 50, fontSize: 59}}>DentalSite</a>
+                <a href="/" className="navLink">DentalSite</a>
                 <div className="linksSection">
                     <a className="navLink" href="about">About</a>
                     <a className="navLink" href="contact">Contact</a>
@@ -22,7 +22,8 @@ export default function Main() {
                     </div>
                 </div>
                 <div className="imageDiv">
-                    <img height={280} width={400} alt="Some graphic here" style={{border: '1px solid black'}}></img>
+                    <div className="imageBg"></div>
+                    <img height={280} width={400} src="https://png.pngtree.com/png-vector/20220525/ourmid/pngtree-business-people-arranging-appointment-in-digital-booking-app-png-image_4739402.png" alt="Some graphic here" style={{border: '1px solid black'}}></img>
                 </div>
             </div>
         </main>
