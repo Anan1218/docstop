@@ -11,6 +11,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { toast } from 'react-toastify';
+import SignOut from '../signout/SignOut';
 
 function Copyright(props) {
   return (
@@ -28,7 +30,10 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+
+  // const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
@@ -37,28 +42,40 @@ export default function SignIn() {
       password: data.get('password'),
     };
 
-    fetch('http://localhost:8080/api/auth/login', { 
-    method: 'POST', 
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include',
-    body: JSON.stringify(postData)}).then(dt => console.log(dt.json()))
+    console.log("hello" + postData.password)
+      const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/login`, { 
+      method: 'POST', 
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify(postData)})
+      // .then(dt => console.log(dt.json()))
+      var tempRes = await res.json()
+
+      if(res.status === 200) {
+        toast.success("User logged in succesfully", {
+          autoClose: 2000, 
+          position: toast.POSITION.TOP_CENTER
+        })
+        console.log("user logged in succesfully")
+      } else {
+        toast.error(tempRes.data.message, {
+          autoClose: 2000, 
+          position: toast.POSITION.TOP_CENTER
+        })    
+      }
+
+    
   };
 
   const handleClickTest = () => {
-    fetch('http://localhost:8080/api/auth/info', { 
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/info`, { 
     method: 'GET', 
     credentials: 'include',
     }).then(dt => console.log(dt.json()))
   };
 
-  const handleClickLogOut = () => {
-    fetch('http://localhost:8080/api/auth/logout', { 
-    method: 'GET', 
-    credentials: 'include',
-    }).then(console.log("logout success"))
-  };
   
   return (
     <ThemeProvider theme={theme}>
@@ -118,14 +135,7 @@ export default function SignIn() {
             >
               Test to get user info
             </Button>
-            <Button
-              onClick={handleClickLogOut}
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Log Out
-            </Button>
+            <SignOut/>
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">

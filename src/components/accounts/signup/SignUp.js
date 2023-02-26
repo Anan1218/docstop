@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { toast } from 'react-toastify';
 
 function Copyright(props) {
   return (
@@ -27,22 +28,36 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignUp() {
-  const handleSubmit = (event) => {
+export default function SignUp () {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const postData = {
       email: data.get('email'),
       password: data.get('password'),
-      name: data.get('firstName'),
+      username: data.get('firstName'),
       phoneNumber: data.get('phoneNumber')
     };
 
-    fetch('http://localhost:8080/api/auth/signup', { method: 'POST', headers: {
+    const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/signup`, { method: 'POST', headers: {
       'Content-Type': 'application/json'
-      // 'Content-Type': 'application/x-www-form-urlencoded',
-    },body: JSON.stringify(postData)}).then(dt => console.log(dt.json()))
+    },body: JSON.stringify(postData)})
 
+    var tempRes = await res.json()
+    console.log(tempRes)
+
+      if(res.status === 200|| res.status === 201) {
+        toast.success("User signed up succesfully", {
+          autoClose: 2000, 
+          position: toast.POSITION.TOP_CENTER
+        })
+        console.log("user signed up succesfully")
+      } else {
+        toast.error(tempRes.data.message, {
+          autoClose: 2000, 
+          position: toast.POSITION.TOP_CENTER
+        })    
+      }
   };
 
   return (
