@@ -1,6 +1,5 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -12,6 +11,10 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux'
+import { registerUser } from '../../../redux/auth/authActions';
+import { useNavigate } from 'react-router-dom';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 function Copyright(props) {
   return (
@@ -29,36 +32,61 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp () {
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const postData = {
-      email: data.get('email'),
-      password: data.get('password'),
-      username: data.get('firstName'),
-      phoneNumber: data.get('phoneNumber')
-    };
-
-    const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/signup`, { method: 'POST', headers: {
-      'Content-Type': 'application/json'
-    },body: JSON.stringify(postData)})
-
-    var tempRes = await res.json()
-    console.log(tempRes)
-
-      if(res.status === 200|| res.status === 201) {
+    const { loading, userInfo, error, success } = useSelector(
+        (state) => state.auth
+    )
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    useEffect(() => {
+    if(error){
+        console.log(error);
+        toast.error(error, {
+          autoClose: 2000, 
+          position: toast.POSITION.TOP_CENTER
+    })}
+    if (success){
         toast.success("User signed up succesfully", {
           autoClose: 2000, 
           position: toast.POSITION.TOP_CENTER
-        })
-        console.log("user signed up succesfully")
-      } else {
-        toast.error(tempRes.data.message, {
-          autoClose: 2000, 
-          position: toast.POSITION.TOP_CENTER
-        })    
-      }
-  };
+        });
+        navigate('/signin')
+    }
+    if (userInfo) navigate('/dashboard')
+  }, [navigate, userInfo, success,error])
+  
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        const postData = {
+        email: data.get('email').toLowerCase(),
+        password: data.get('password'),
+        username: data.get('firstName'),
+        phoneNumber: data.get('phoneNumber')
+        };
+
+    dispatch(registerUser(postData));
+    
+    // const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/signup`, { method: 'POST', headers: {
+    //   'Content-Type': 'application/json'
+    // },body: JSON.stringify(postData)})
+
+    // var tempRes = await res.json()
+    // console.log(tempRes)
+    }
+    //   if(res.status === 200|| res.status === 201) {
+    //     toast.success("User signed up succesfully", {
+    //       autoClose: 2000, 
+    //       position: toast.POSITION.TOP_CENTER
+    //     })
+    //     console.log("user signed up succesfully")
+    //   } else {
+    //     toast.error(tempRes.data.message, {
+    //       autoClose: 2000, 
+    //       position: toast.POSITION.TOP_CENTER
+    //     })    
+    //   }
+
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -137,14 +165,15 @@ export default function SignUp () {
                 />
               </Grid>
             </Grid>
-            <Button
+            <LoadingButton
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              loading={loading}
             >
-              Sign Up
-            </Button>
+                Sign Up {loading}
+            </LoadingButton>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/signin" variant="body2">

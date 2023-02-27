@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,6 +13,10 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { toast } from 'react-toastify';
 import SignOut from '../signout/SignOut';
+import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { userLogin } from '../../../redux/auth/authActions';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 function Copyright(props) {
   return (
@@ -31,7 +35,25 @@ const theme = createTheme();
 
 export default function SignIn() {
 
-  // const [errorMessage, setErrorMessage] = useState('');
+  const { loading, userInfo, error } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+   const navigate = useNavigate();
+
+   useEffect(() => {
+    if(error){
+        console.log(error);
+        toast.error(error, {
+          autoClose: 2000, 
+          position: toast.POSITION.TOP_CENTER
+    })}
+    if (userInfo) {
+      toast.success("User signed in succesfully", {
+          autoClose: 2000, 
+          position: toast.POSITION.TOP_CENTER
+        });
+      navigate('/user-dashboard')
+    }
+  }, [navigate, userInfo,error])
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -42,29 +64,31 @@ export default function SignIn() {
       password: data.get('password'),
     };
 
-    console.log("hello" + postData.password)
-      const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/login`, { 
-      method: 'POST', 
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include',
-      body: JSON.stringify(postData)})
-      // .then(dt => console.log(dt.json()))
-      var tempRes = await res.json()
+    dispatch(userLogin(postData))
 
-      if(res.status === 200) {
-        toast.success("User logged in succesfully", {
-          autoClose: 2000, 
-          position: toast.POSITION.TOP_CENTER
-        })
-        console.log("user logged in succesfully")
-      } else {
-        toast.error(tempRes.data.message, {
-          autoClose: 2000, 
-          position: toast.POSITION.TOP_CENTER
-        })    
-      }
+      // const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/login`, { 
+      // method: 'POST', 
+      // headers: {
+      //   'Content-Type': 'application/json'
+      // },
+      // credentials: 'include',
+      // body: JSON.stringify(postData)})
+      // // .then(dt => console.log(dt.json()))
+      // var tempRes = await res.json()
+
+      // if(res.status === 200) {
+      //   toast.success("User logged in succesfully", {
+      //     autoClose: 2000, 
+      //     position: toast.POSITION.TOP_CENTER
+      //   })
+      //   console.log("user logged in succesfully");
+      //   console.log(tempRes)
+      // } else {
+      //   toast.error(tempRes.data.message, {
+      //     autoClose: 2000, 
+      //     position: toast.POSITION.TOP_CENTER
+      //   })    
+      // }
 
     
   };
@@ -127,14 +151,15 @@ export default function SignIn() {
             >
               Sign In
             </Button>
-            <Button
+            <LoadingButton
               onClick={handleClickTest}
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              loading={loading}
             >
               Test to get user info
-            </Button>
+            </LoadingButton>
             <SignOut/>
             <Grid container>
               <Grid item xs>

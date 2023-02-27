@@ -1,14 +1,18 @@
 import { Button } from '@mui/material'
 import React from 'react'
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux'
+import { logout } from '../../../redux/auth/authSlice'
 
 const SignOut = () => {
     
+    const dispatch = useDispatch()
+
     const handleClickLogOut = async () => {
         const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/logout`, { 
         method: 'GET', 
         credentials: 'include',
-        }).then(console.log("logout success"))
+        })
 
         var tempRes = await res.json()
         if(res.status === 200) {
@@ -16,6 +20,7 @@ const SignOut = () => {
           autoClose: 2000, 
           position: toast.POSITION.TOP_CENTER
         })
+        dispatch(logout())
         console.log("user logged out succesfully")
       } else {
         toast.error(tempRes.data.message, {
