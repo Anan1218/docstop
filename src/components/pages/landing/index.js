@@ -6,8 +6,11 @@ export default function Main() {
     const [showing, setShowing] = useState(false)
 
     useEffect(() => {
-        setShowing(true)
+        setTimeout(() => {
+            setShowing(true)
+        }, 0)
     }, [])
+
 
     return (
         <main className="page">
