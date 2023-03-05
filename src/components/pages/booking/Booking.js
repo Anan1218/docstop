@@ -90,19 +90,76 @@ function BookingContent() {
   const [open, setOpen] = useState(true);
   const [userInfo, setInfo] = useState('');
   // const [doctors, setDoctors] = useState([]);
-  const doctors = [
+  const doctors = [ // perform a SQL query, grabbing the next 14 days for dates
     {
       name: "Chen Tzen Kok",
       title: "D.D.S",
       rating: 4.9,
       location: "241 South Beverly Drive, 1/2, Beverly Hills, CA 90212",
-      availability: "",
+      dates: [{
+        date: "March 7",
+        appointments: 0,
+      },
+      {
+        date: "March 8",
+        appointments: 1,
+      },
+      {
+        date: "March 9",
+        appointments: 2,
+      },
+      {
+        date: "March 10",
+        appointments: 3,
+      },
+      {
+        date: "March 11",
+        appointments: 4,
+      },
+      {
+        date: "March 12",
+        appointments: 5,
+      },
+      {
+        date: "March 13",
+        appointments: 17,
+      },
+    ],
     },
     {
       name: "Mengan Wang",
       title: "D.D.S",
       rating: 4.8,
-      location: "UCLA"
+      location: "UCLA",
+      dates: [{
+        date: "March 7",
+        appointments: 0,
+      },
+      {
+        date: "March 8",
+        appointments: 1,
+      },
+      {
+        date: "March 9",
+        appointments: 2,
+      },
+      {
+        date: "March 10",
+        appointments: 3,
+      },
+      {
+        date: "March 11",
+        appointments: 4,
+      },
+      {
+        date: "March 12",
+        appointments: 5,
+      },
+      {
+        date: "March 13",
+        appointments: 17,
+      },
+    ],
     },
   ];
 
@@ -119,7 +176,6 @@ function BookingContent() {
     //   location: "241 South Beverly Drive, 1/2, Beverly Hills, CA 90212"
     // }]);
 
-    console.log(doctors);
     const fetchData = async () => {
     const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/info`, { 
     method: 'GET', 

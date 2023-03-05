@@ -27,7 +27,7 @@ function Doctor(props) {
         </Typography>
       </Grid>
       <Grid item xs = {6}>
-        <Availability/>
+        <Availability dates = {props.data.dates}/>
       </Grid>
     </Grid>
   );
