@@ -4,6 +4,9 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Avatar from '@mui/material/Avatar';
 import Availability from './Availability';
+import StarIcon from '@mui/icons-material/Star';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+
 import './Booking.css';
 
 function Doctor(props) {
@@ -13,18 +16,29 @@ function Doctor(props) {
     // </Typography>
     <Grid className = "doctor-list" container space = {2}>
       <Grid item xs={2}>
-        <Avatar src={props.avatar}/>
+        <Avatar sx={{width: 100, height: 100}} src={props.avatar}/>
       </Grid>
       <Grid item xs = {4}>
-        <Typography>
+        <Typography variant="h5">
           { props.data.name + " " + props.data.title}
         </Typography>
         <Typography>
-          { props.data.rating}
+          { props.data.occupation}
         </Typography>
-        <Typography>
-          { props.data.location }
-        </Typography>
+        <div style = {{display: 'flex'}}>
+          <StarIcon/>
+          <Typography>
+            { props.data.rating}
+          </Typography>
+        </div>
+        
+        <div style = {{display: 'flex'}}>
+          <LocationOnIcon/>
+          <Typography>
+            { props.data.location }
+          </Typography>
+        </div>
+        
       </Grid>
       <Grid item xs = {6}>
         <Availability dates = {props.data.dates}/>
@@ -35,10 +49,6 @@ function Doctor(props) {
 
 Doctor.propTypes = {
   data: PropTypes.object
-  // name: PropTypes.string,
-  // title: PropTypes.string,
-  // rating: PropTypes.number,
-  // location: PropTypes.string
 };
 
 export default Doctor;

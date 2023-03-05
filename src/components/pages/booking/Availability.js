@@ -11,19 +11,20 @@ import './Booking.css';
 
 function Availability(props) {
   return (
-    // <Typography component="h2" variant="h6" color="primary" gutterBottom>
-    //   {props.name}
-    // </Typography>
     <Box sx = {{flexGrow:1}}>
       <Grid container space = {2}>
         { props.dates.map((data, index) => (
           <Grid item xs = {12/7}>
-            <Card variant = "outlined">
+            <Card
+              variant = "outlined"
+              style={data.appointments!==0 ? {backgroundColor: '#1976d2'}: {}} // white background if no appointments
+              className = "availability-card">
+
               <Typography>
-                {props.dates[index].date}
+                {data.date}
               </Typography>
               <Typography>
-                {props.dates[index].appointments + " appts"}
+                {data.appointments + " appts"}
               </Typography>
             </Card>
           </Grid>

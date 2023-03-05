@@ -90,10 +90,11 @@ function BookingContent() {
   const [open, setOpen] = useState(true);
   const [userInfo, setInfo] = useState('');
   // const [doctors, setDoctors] = useState([]);
-  const doctors = [ // perform a SQL query, grabbing the next 14 days for dates
+  const doctors = [ // perform a SQL query, grabbing the next 7 days for dates. Limit to 7
     {
       name: "Chen Tzen Kok",
       title: "D.D.S",
+      occupation: "Dentist",
       rating: 4.9,
       location: "241 South Beverly Drive, 1/2, Beverly Hills, CA 90212",
       dates: [{
@@ -129,6 +130,7 @@ function BookingContent() {
     {
       name: "Mengan Wang",
       title: "D.D.S",
+      occupation: "Doctor",
       rating: 4.8,
       location: "UCLA",
       dates: [{
