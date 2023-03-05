@@ -8,6 +8,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Dashboard from './components/pages/dashboard/Dashboard';
 import ProtectedRoute from './routes/ProtectedRoute';
+import AdminDashboard from './components/pages/adminDashboard/Dashboard';
 
 function App() {
   
@@ -19,6 +20,7 @@ function App() {
         <Route element={<SignUp />} exact path="/signup"/>
         <Route element={<ProtectedRoute />}>
           <Route element= {<Dashboard />} exact path='/user-dashboard' />
+          <Route element= {<AdminDashboard />} exact path='/admin-dashboard' />
         </Route>
         <Route path="*" element={<NotFound/>}/>
         <Route path="/home" element={<Home />} /> {/* TODO: make this the main '/' path and make separate routes for sign in/up */}
