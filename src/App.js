@@ -4,6 +4,7 @@ import SignUp from './components/accounts/signup/SignUp';
 import {Route, Routes } from 'react-router-dom'
 import NotFound from './components/pages/error/notFound';
 import Home from './components/pages/landing/index'
+import Booking from './components/pages/booking/Booking';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Dashboard from './components/pages/dashboard/Dashboard';
@@ -24,6 +25,7 @@ function App() {
         </Route>
         <Route path="*" element={<NotFound/>}/>
         <Route path="/home" element={<Home />} /> {/* TODO: make this the main '/' path and make separate routes for sign in/up */}
+        <Route path="/booking" element={<Booking /> }/>
       </Routes>
        <ToastContainer/>
       </div>
