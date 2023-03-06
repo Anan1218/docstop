@@ -24,6 +24,10 @@ h1 {
     text-align: center;
 }
 
+h2 {
+  text-align: center;
+}
+
 .navLink {
     text-decoration: none;
     color: inherit;
@@ -193,4 +197,45 @@ h1 {
     .navLink {
         margin-left: 0px;
     }
+}
+
+#infoSection {
+  padding: 50px;
+
+}
+
+#infoSection h1 {
+  font-size: 3em;
+}
+
+#infoStages {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+
+#infoStages button {
+  padding: 16px;
+  border-radius: 999px;
+  background-color: #eee;
+  color: #999;
+  border: 0px solid transparent;
+  transition: 0.3s;
+}
+
+#infoStages button:hover {
+  color: #444;
+  cursor: pointer;
+}
+
+#infoStages button.selected {
+  background-color: black;
+  color: white;
+}
+
+#infoStages img {
+  align-self: center;
+  padding: 4px;
+  width: 15px;
+  height: 30px;
 }

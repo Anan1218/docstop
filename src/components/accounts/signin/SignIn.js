@@ -51,7 +51,13 @@ export default function SignIn() {
           autoClose: 2000, 
           position: toast.POSITION.TOP_CENTER
         });
-      navigate('/user-dashboard')
+        console.log(userInfo.data.roles);
+      if (userInfo.data.roles[0] === "ROLE_USER" || userInfo.data.roles[0] === "ROLE_PATIENT"){
+        navigate('/user-dashboard');
+      }
+      if (userInfo.data.roles[1] === "ROLE_ORG_ADMIN" || userInfo.data.roles[1] === "ROLE_ORG_DENTIST"){
+        navigate('/admin-dashboard')
+      }
     }
   }, [navigate, userInfo,error])
 
@@ -65,30 +71,6 @@ export default function SignIn() {
     };
 
     dispatch(userLogin(postData))
-
-      // const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/login`, { 
-      // method: 'POST', 
-      // headers: {
-      //   'Content-Type': 'application/json'
-      // },
-      // credentials: 'include',
-      // body: JSON.stringify(postData)})
-      // // .then(dt => console.log(dt.json()))
-      // var tempRes = await res.json()
-
-      // if(res.status === 200) {
-      //   toast.success("User logged in succesfully", {
-      //     autoClose: 2000, 
-      //     position: toast.POSITION.TOP_CENTER
-      //   })
-      //   console.log("user logged in succesfully");
-      //   console.log(tempRes)
-      // } else {
-      //   toast.error(tempRes.data.message, {
-      //     autoClose: 2000, 
-      //     position: toast.POSITION.TOP_CENTER
-      //   })    
-      // }
 
     
   };
