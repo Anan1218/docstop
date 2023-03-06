@@ -27,7 +27,7 @@ export default function Main() {
                     <h1>Booking Reimagined.</h1> 
                     <p>Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut</p>
                     <div className={`buttonDiv responsiveDiv ${showing ? "showing" : ""}`}>
-                        <button id="bookNow">Book Now</button>
+                        <button id="bookNow" >Book Now</button>
                         <button id="learnMore">Learn More</button>
                     </div>
                 </div>

@@ -7,7 +7,7 @@ export const registerUser = createAsyncThunk(
   async (postData, { rejectWithValue }) => {
     try {
       
-    const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/signup`, { method: 'POST', headers: {
+    const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/patient`, { method: 'POST', headers: {
       'Content-Type': 'application/json'
     },body: JSON.stringify(postData)})
 

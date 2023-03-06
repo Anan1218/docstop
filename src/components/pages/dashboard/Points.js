@@ -2,11 +2,11 @@ import * as React from 'react';
 import Title from './Title';
 
 
-export default function Badges() {
+export default function Points() {
 
   return (
     <React.Fragment>
-      <Title>Badges</Title>
+      <Title>Points</Title>
     </React.Fragment>
   );
 }

@@ -60,8 +60,10 @@ export default function SignUp () {
         const postData = {
         email: data.get('email').toLowerCase(),
         password: data.get('password'),
-        username: data.get('firstName'),
-        phoneNumber: data.get('phoneNumber')
+        username: data.get('firstName') + ' ' + data.get('lastName'),
+        firstName: data.get('firstName'),
+        lastName: data.get('lastName'),
+        phoneNumber: data.get('phoneNumber'),
         };
 
     dispatch(registerUser(postData));
@@ -134,7 +136,7 @@ export default function SignUp () {
                   fullWidth
                   id="phoneNumber"
                   label="Phone Number"
-                  name="phone"
+                  name="phoneNumber"
                 />
               </Grid>
               <Grid item xs={12}>
