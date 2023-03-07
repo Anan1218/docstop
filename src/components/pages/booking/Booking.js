@@ -10,7 +10,9 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Doctor from './Doctor';
-import { eachHourOfInterval, isWithinInterval } from 'date-fns'
+import { eachHourOfInterval, isWithinInterval, subMinutes } from 'date-fns'
+
+
 import { useEffect } from 'react';
 import { DashboardCustomizeSharp } from '@mui/icons-material';
 import Availability from './Availability';
@@ -68,8 +70,12 @@ const mdTheme = createTheme();
 function BookingContent() {
   const [open, setOpen] = useState(true);
   const [userInfo, setInfo] = useState('');
+  const [availAppts, setAvailAppts] = useState([]);
+  const [loading, setLoading] = useState(true);
   //const [doctors, setDoctors] = useState([]);
-
+  let startTime = new Date('2023-03-07T08:00:00');
+  let endTime = new Date('2023-03-07T17:00:00');
+  let timeSlots0 = eachHourOfInterval({ start: startTime, end: endTime });
   const doctors = [ // perform a SQL query, grabbing the next 7 days for dates. Limit to 7
     {
       name: "Chen Tzen Kok",
@@ -78,32 +84,19 @@ function BookingContent() {
       rating: 4.9,
       location: "241 South Beverly Drive, 1/2, Beverly Hills, CA 90212",
       dates: [{
+        date: "March 6",
+        availTimeSlots: availAppts,
+        appointments: availAppts.length,
+      },
+      {
         date: "March 7",
+        availTimeSlots: timeSlots0,
         appointments: 0,
       },
       {
         date: "March 8",
-        appointments: 1,
-      },
-      {
-        date: "March 9",
-        appointments: 2,
-      },
-      {
-        date: "March 10",
-        appointments: 3,
-      },
-      {
-        date: "March 11",
-        appointments: 4,
-      },
-      {
-        date: "March 12",
-        appointments: 5,
-      },
-      {
-        date: "March 13",
-        appointments: 17,
+        availTimeSlots: availAppts,
+        appointments: availAppts.length,
       },
     ],
     },
@@ -114,32 +107,19 @@ function BookingContent() {
       rating: 4.8,
       location: "UCLA",
       dates: [{
+        date: "March 6",
+        availTimeSlots: availAppts,
+        appointments: availAppts.length,
+      },
+      {
         date: "March 7",
-        appointments: 0,
+        availTimeSlots: availAppts,
+        appointments: availAppts.length,
       },
       {
         date: "March 8",
-        appointments: 1,
-      },
-      {
-        date: "March 9",
-        appointments: 2,
-      },
-      {
-        date: "March 10",
-        appointments: 3,
-      },
-      {
-        date: "March 11",
-        appointments: 4,
-      },
-      {
-        date: "March 12",
-        appointments: 5,
-      },
-      {
-        date: "March 13",
-        appointments: 17,
+        availTimeSlots: timeSlots0,
+        appointments: 0,
       },
     ],
     },
@@ -159,42 +139,42 @@ function BookingContent() {
     // }]);
 
     const fetchData = async () => {
-    const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/appointment`, { 
-    method: 'GET', 
-    credentials: 'include',
-    });
+      const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/appointment`, { 
+      method: 'GET', 
+      credentials: 'include',
+      });
 
-    var tempRes = await res.json();
-    console.log(tempRes.data);
-    setInfo(tempRes.data.username);
-    convertData(tempRes.data);
-  }
-
-  function convertData(data) {
-    let doctorAppt = [];
-    let availableSlots = [];
-    let startTime = new Date('2023-03-30T08:00:00');
-    let endTime = new Date('2023-03-30T17:00:00');
-    let timeSlots = eachHourOfInterval({ start: startTime, end: endTime });
-    for(let i = 0; i < data.length; i++){
-      doctorAppt.push([data[i].id, new Date(data[i].date+"T"+data[i].startTime), new Date(data[i].date+"T"+data[i].endTime)]);
+      var tempRes = await res.json();
+      console.log(tempRes.data);
+      setInfo(tempRes.data.username);
+      setAvailAppts(convertData(tempRes.data));
+      setLoading(false)
     }
-    for(let i = 0; i < timeSlots.length; i++){
-      let slotAvailable = true;
-      for (let j = 0; j < doctorAppt.length; j++) {
-        if (isWithinInterval(timeSlots[i], { start: doctorAppt[j][1], end: doctorAppt[j][2] })) {
-          slotAvailable = false;
-          console.log("hi")
-          break;
+
+    function convertData(data) {
+      let doctorAppt = [];
+      let availableSlots = [];
+      let startTime = new Date('2023-03-07T08:00:00');
+      let endTime = new Date('2023-03-07T17:00:00');
+      let timeSlots = eachHourOfInterval({ start: startTime, end: endTime });
+      for(let i = 0; i < data.length; i++){
+        doctorAppt.push([data[i].id, new Date(data[i].date+"T"+data[i].startTime), new Date(data[i].date+"T"+data[i].endTime)]);
+      }
+      for(let i = 0; i < timeSlots.length; i++){
+        let slotAvailable = true;
+        for (let j = 0; j < doctorAppt.length; j++) {
+          if (isWithinInterval(timeSlots[i], { start: doctorAppt[j][1], end: subMinutes(doctorAppt[j][2], 1) })) {
+            slotAvailable = false;
+            break;
+          }
+        }
+        if (slotAvailable) {
+          availableSlots.push(timeSlots[i]);
         }
       }
-      if (slotAvailable) {
-        availableSlots.push(timeSlots[i]);
-      }
-    }
-    console.log("doctorAppt", doctorAppt);
-    console.log("availableSlots", availableSlots);
-    
+      console.log("doctorAppt", doctorAppt);
+      console.log("availableSlots", availableSlots);
+      return availableSlots;
   }
 
 

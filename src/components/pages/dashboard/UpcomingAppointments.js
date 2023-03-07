@@ -10,10 +10,10 @@ export default function UpcomingAppointments( {upcomingApt} ) {
       <Title>Upcoming Appointments</Title>
       {upcomingApt.data.map((appointment, idx) => 
       <div key={idx}>
-      <Typography variant="h3" gutterBottom>
+      <Typography variant="body1" >
         {`You have a visit on ${appointment.date} at ${appointment.startTime}`}
       </Typography>
-      <Typography variant="h5">
+      <Typography variant="body2">
         {`with ${appointment.dentist.firstName} ${appointment.dentist.lastName}`}
       </Typography>
       </div>)
