@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,6 +11,12 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { toast } from 'react-toastify';
+import SignOut from '../signout/SignOut';
+import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { userLogin } from '../../../redux/auth/authActions';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 function Copyright(props) {
   return (
@@ -28,7 +34,34 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+
+  const { loading, userInfo, error } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+   const navigate = useNavigate();
+
+   useEffect(() => {
+    if(error){
+        console.log(error);
+        toast.error(error, {
+          autoClose: 2000, 
+          position: toast.POSITION.TOP_CENTER
+    })}
+    if (userInfo) {
+      toast.success("User signed in succesfully", {
+          autoClose: 2000, 
+          position: toast.POSITION.TOP_CENTER
+        });
+        console.log(userInfo.data.roles);
+      if (userInfo.data.roles[0] === "ROLE_USER" || userInfo.data.roles[0] === "ROLE_PATIENT"){
+        navigate('/user-dashboard');
+      }
+      if (userInfo.data.roles[1] === "ROLE_ORG_ADMIN" || userInfo.data.roles[1] === "ROLE_ORG_DENTIST"){
+        navigate('/admin-dashboard')
+      }
+    }
+  }, [navigate, userInfo,error])
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
@@ -37,28 +70,18 @@ export default function SignIn() {
       password: data.get('password'),
     };
 
-    fetch('http://localhost:8080/api/auth/login', { 
-    method: 'POST', 
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include',
-    body: JSON.stringify(postData)}).then(dt => console.log(dt.json()))
+    dispatch(userLogin(postData))
+
+    
   };
 
   const handleClickTest = () => {
-    fetch('http://localhost:8080/api/auth/info', { 
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/info`, { 
     method: 'GET', 
     credentials: 'include',
     }).then(dt => console.log(dt.json()))
   };
 
-  const handleClickLogOut = () => {
-    fetch('http://localhost:8080/api/auth/logout', { 
-    method: 'GET', 
-    credentials: 'include',
-    }).then(console.log("logout success"))
-  };
   
   return (
     <ThemeProvider theme={theme}>
@@ -110,22 +133,16 @@ export default function SignIn() {
             >
               Sign In
             </Button>
-            <Button
+            <LoadingButton
               onClick={handleClickTest}
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              loading={loading}
             >
               Test to get user info
-            </Button>
-            <Button
-              onClick={handleClickLogOut}
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Log Out
-            </Button>
+            </LoadingButton>
+            <SignOut/>
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
