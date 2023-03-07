@@ -19,7 +19,7 @@ import {
   DayView,
   WeekView,
   MonthView,
-  Appointments, DateNavigator, TodayButton,
+  Appointments, DateNavigator, TodayButton, AppointmentTooltip,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
@@ -104,6 +104,7 @@ export default () => {
           <WeekView startDayHour={9} endDayHour={19}/>
           <DayView startDayHour={9} endDayHour={14}/>
           <Appointments/>
+          <AppointmentTooltip />
           <Toolbar />
           <DateNavigator />
           <TodayButton />
