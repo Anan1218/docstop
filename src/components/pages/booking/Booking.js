@@ -151,6 +151,27 @@ function BookingContent() {
       setLoading(false)
     }
 
+    //ALGORITHM TO DISPLAY AVAILABLE APPOINTMENT TIME
+    // for loop through days:
+    //   starttime = 9am
+    //   endtime = 9pm
+    //   arr = []
+    //   for i in res.data:
+    //     i.convertStringToTime()
+    //     endTime = i.startTime
+    //     arr.append({starttime, endtime})
+    //     starttime = i.endTime
+      
+    //   if starttime != 9pm:
+    //     arr.append({starttime, 9pm})
+        
+    //   return arr 
+
+
+    // [[9-10, 12-3, 4-9], [9-10, 12-3, 4-9]]
+
+
+
     function convertData(data) {
       let doctorAppt = [];
       let availableSlots = [];
