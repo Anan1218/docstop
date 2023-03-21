@@ -6,7 +6,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
-import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Doctor from './Doctor';
@@ -14,8 +13,6 @@ import { eachHourOfInterval, isWithinInterval, subMinutes } from 'date-fns'
 
 
 import { useEffect } from 'react';
-import { DashboardCustomizeSharp } from '@mui/icons-material';
-import Availability from './Availability';
 
 
 
@@ -69,9 +66,7 @@ const mdTheme = createTheme();
 
 function BookingContent() {
   const [open, setOpen] = useState(true);
-  const [userInfo, setInfo] = useState('');
   const [availAppts, setAvailAppts] = useState([]);
-  const [loading, setLoading] = useState(true);
   //const [doctors, setDoctors] = useState([]);
   let startTime = new Date('2023-03-07T08:00:00');
   let endTime = new Date('2023-03-07T17:00:00');
@@ -146,9 +141,7 @@ function BookingContent() {
 
       var tempRes = await res.json();
       console.log(tempRes.data);
-      setInfo(tempRes.data.username);
       setAvailAppts(convertData(tempRes.data));
-      setLoading(false)
     }
 
     //ALGORITHM TO DISPLAY AVAILABLE APPOINTMENT TIME
@@ -175,8 +168,8 @@ function BookingContent() {
     function convertData(data) {
       let doctorAppt = [];
       let availableSlots = [];
-      let startTime = new Date('2023-03-07T08:00:00');
-      let endTime = new Date('2023-03-07T17:00:00');
+      let startTime = new Date('2023-03-30T08:00:00');
+      let endTime = new Date('2023-03-30T17:00:00');
       let timeSlots = eachHourOfInterval({ start: startTime, end: endTime });
       for(let i = 0; i < data.length; i++){
         doctorAppt.push([data[i].id, new Date(data[i].date+"T"+data[i].startTime), new Date(data[i].date+"T"+data[i].endTime)]);

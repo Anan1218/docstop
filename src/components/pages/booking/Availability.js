@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 import { Grid } from '@mui/material';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 
 import './Booking.css';
@@ -38,9 +37,7 @@ function Availability(props) {
   );
 }
 
-async function displayAvailTimeSlots(data){
-  return await data.availTimeSlots; 
-}
+
 
 Availability.propTypes = {
   dates: PropTypes.array,
