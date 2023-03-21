@@ -20,7 +20,9 @@ export const mainListItems = (
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
-      <ListItemText primary="Past Appointments" />
+      <Link to="/past-appointment">
+        <ListItemText primary="Past Appointments" />
+      </Link>
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>

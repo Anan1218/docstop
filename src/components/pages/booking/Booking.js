@@ -1,43 +1,20 @@
 import React, { useState } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Doctor from './Doctor';
 import { eachHourOfInterval, isWithinInterval, subMinutes } from 'date-fns'
 
 
 import { useEffect } from 'react';
-import { DashboardCustomizeSharp } from '@mui/icons-material';
-import Availability from './Availability';
 
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="\">
-        Dental Dash
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const drawerWidth = 240;
 
@@ -89,9 +66,7 @@ const mdTheme = createTheme();
 
 function BookingContent() {
   const [open, setOpen] = useState(true);
-  const [userInfo, setInfo] = useState('');
   const [availAppts, setAvailAppts] = useState([]);
-  const [loading, setLoading] = useState(true);
   //const [doctors, setDoctors] = useState([]);
   let startTime = new Date('2023-03-07T08:00:00');
   let endTime = new Date('2023-03-07T17:00:00');
@@ -159,43 +134,63 @@ function BookingContent() {
     // }]);
 
     const fetchData = async () => {
-    const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/appointment`, { 
-    method: 'GET', 
-    credentials: 'include',
-    });
+      const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/appointment`, { 
+      method: 'GET', 
+      credentials: 'include',
+      });
 
-    var tempRes = await res.json();
-    console.log(tempRes.data);
-    setInfo(tempRes.data.username);
-    setAvailAppts(convertData(tempRes.data));
-    setLoading(false)
-  }
-
-  function convertData(data) {
-    let doctorAppt = [];
-    let availableSlots = [];
-    let startTime = new Date('2023-03-07T08:00:00');
-    let endTime = new Date('2023-03-07T17:00:00');
-    let timeSlots = eachHourOfInterval({ start: startTime, end: endTime });
-    for(let i = 0; i < data.length; i++){
-      doctorAppt.push([data[i].id, new Date(data[i].date+"T"+data[i].startTime), new Date(data[i].date+"T"+data[i].endTime)]);
+      var tempRes = await res.json();
+      console.log(tempRes.data);
+      setAvailAppts(convertData(tempRes.data));
     }
-    for(let i = 0; i < timeSlots.length; i++){
-      let slotAvailable = true;
-      for (let j = 0; j < doctorAppt.length; j++) {
-        if (isWithinInterval(timeSlots[i], { start: doctorAppt[j][1], end: subMinutes(doctorAppt[j][2], 1) })) {
-          slotAvailable = false;
-          break;
+
+    //ALGORITHM TO DISPLAY AVAILABLE APPOINTMENT TIME
+    // for loop through days:
+    //   starttime = 9am
+    //   endtime = 9pm
+    //   arr = []
+    //   for i in res.data:
+    //     i.convertStringToTime()
+    //     endTime = i.startTime
+    //     arr.append({starttime, endtime})
+    //     starttime = i.endTime
+      
+    //   if starttime != 9pm:
+    //     arr.append({starttime, 9pm})
+        
+    //   return arr 
+
+
+    // [[9-10, 12-3, 4-9], [9-10, 12-3, 4-9]]
+
+
+
+    function convertData(data) {
+      let doctorAppt = [];
+      let availableSlots = [];
+      let startTime = new Date('2023-03-30T08:00:00');
+      let endTime = new Date('2023-03-30T17:00:00');
+      let timeSlots = eachHourOfInterval({ start: startTime, end: endTime });
+      for(let i = 0; i < data.length; i++){
+        doctorAppt.push([data[i].id, new Date(data[i].date+"T"+data[i].startTime), new Date(data[i].date+"T"+data[i].endTime)]);
+      }
+      for(let i = 0; i < timeSlots.length; i++){
+        let slotAvailable = true;
+        for (let j = 0; j < doctorAppt.length; j++) {
+          if (isWithinInterval(timeSlots[i], { start: doctorAppt[j][1], end: subMinutes(doctorAppt[j][2], 1) })) {
+            slotAvailable = false;
+            break;
+          }
+        }
+        if (slotAvailable) {
+          availableSlots.push(timeSlots[i]);
         }
       }
-      if (slotAvailable) {
-        availableSlots.push(timeSlots[i]);
-      }
-    }
-    console.log("doctorAppt", doctorAppt);
-    console.log("availableSlots", availableSlots);
-    return availableSlots;
+      console.log("doctorAppt", doctorAppt);
+      console.log("availableSlots", availableSlots);
+      return availableSlots;
   }
+
 
   // call the function
   fetchData()

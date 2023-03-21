@@ -3,15 +3,13 @@ import Paper from '@mui/material/Paper';
 import {
   Box,
   Button,
-  ButtonGroup,
   FormControl,
-  FormHelperText, IconButton,
   InputLabel,
   MenuItem,
   Select,
   Typography
 } from "@mui/material";
-import {AllDayPanel, ViewState} from '@devexpress/dx-react-scheduler';
+import { ViewState} from '@devexpress/dx-react-scheduler';
 import {
   Scheduler,
   Toolbar,
@@ -21,8 +19,6 @@ import {
   MonthView,
   Appointments, DateNavigator, TodayButton, AppointmentTooltip,
 } from '@devexpress/dx-react-scheduler-material-ui';
-import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import {useState} from "react";
 
 const schedulerData = [
@@ -30,7 +26,7 @@ const schedulerData = [
   { startDate: '2018-11-01T12:00', endDate: '2018-11-01T13:30', title: 'Go to a gym' },
 ];
 
-export default () => {
+export default function Calender() {
   const [age, setAge] = useState(0);
   const [curDate, setCurDate] = useState('2018-11-01');
 
