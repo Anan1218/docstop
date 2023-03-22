@@ -25,7 +25,7 @@ import MainCard from '../../notiComponents/MainCard';
 import Transitions from '../../notiComponents/@extended/Transitions';
 
 // assets
-import { BellOutlined, CloseOutlined, GiftOutlined, MessageOutlined, SettingOutlined } from '@ant-design/icons';
+import { BellOutlined, CloseOutlined } from '@ant-design/icons';
 
 // sx styles
 const avatarSX = {
@@ -66,7 +66,7 @@ const NotificationContent = ({notificationInfo, onClickCallback}) => {
           <ListItemSecondaryAction>
               <Typography variant="caption" noWrap>
                   {/*{time}*/}
-                  9:00 AM
+                  {notificationInfo.createdAt}
               </Typography>
           </ListItemSecondaryAction>
         </ListItemButton>
