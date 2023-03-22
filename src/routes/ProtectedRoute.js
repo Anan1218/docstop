@@ -9,7 +9,14 @@ const ProtectedRoute = () => {
   console.log("Protected route user", currentUser)
 
   // show unauthorized screen if no user is found in react context
-  if (currentUser === null) {
+  if (currentUser.loading) {
+    return (
+      <div className='unauthorized'>
+        <h1>Checking user info</h1>
+      </div>
+    )
+  }
+  if (currentUser.data === null) {
     return (
       <div className='unauthorized'>
         <h1>Unauthorized :(</h1>

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import {useEffect, useRef, useState} from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -44,6 +44,37 @@ const actionSX = {
     transform: 'none'
 };
 
+const NotificationContent = ({notificationInfo, onClickCallback}) => {
+    // TODO: Avatar icon
+    return (
+      <>
+        <ListItemButton onClick={() => {onClickCallback()}} sx={notificationInfo.read ? {bgcolor: 'lightgray'} : {}}>
+          <ListItemAvatar>
+              <Avatar
+                sx={{
+                    color: 'primary.main',
+                    bgcolor: 'primary.lighter'
+                }}
+              >
+                  C
+              </Avatar>
+          </ListItemAvatar>
+          <ListItemText
+            primary={notificationInfo.title}
+            secondary={notificationInfo.body}
+          />
+          <ListItemSecondaryAction>
+              <Typography variant="caption" noWrap>
+                  {/*{time}*/}
+                  9:00 AM
+              </Typography>
+          </ListItemSecondaryAction>
+        </ListItemButton>
+        <Divider />
+      </>
+    )
+}
+
 // ==============================|| HEADER CONTENT - NOTIFICATION ||============================== //
 
 const Notification = () => {
@@ -66,6 +97,90 @@ const Notification = () => {
     const iconBackColorOpen = 'grey.300';
     const iconBackColor = 'grey.100';
 
+    // Notification api -----
+    const [notifContents, setNotifContents] = useState([]);
+    const [hasMoreHistory, setHasMoreHistory] = useState(false);
+
+    const setNotificationAsRead = async (idx) => {
+        if (notifContents[idx].read) return;  // stop if notification is already read
+        let queryUrl = `${process.env.REACT_APP_BASE_URL}/api/notification/${notifContents[idx].id}`;
+        const res = await fetch(queryUrl, {
+            method: 'GET',
+            credentials: 'include',
+        }).then(r => r.json());
+        console.log("Read notification", res);
+
+        // Update content state
+        const newNotifContents = notifContents.map((c, i) => {
+            return i === idx ? {...c, read: true} : c;
+        });
+        setNotifContents(newNotifContents);
+    }
+
+    const fetchMoreDataInHistory = async () => {
+        let lastDate = new Date(notifContents[notifContents.length - 1].createdAt);
+        lastDate.setMinutes(lastDate.getMinutes() - lastDate.getTimezoneOffset());
+        console.log(lastDate.toISOString());
+        let queryUrl = `${process.env.REACT_APP_BASE_URL}/api/notification?dateTimeBefore=${lastDate.toISOString()}`;
+        const res = await fetch(queryUrl, {
+            method: 'GET',
+            credentials: 'include',
+        }).then(r => r.json());
+        console.log(res);
+
+        const originalContent = [...notifContents];
+        if (originalContent[originalContent.length - 1].id === res.data[0].id)
+            originalContent.pop();
+        const newContent = originalContent.concat(res.data);
+        setNotifContents(newContent);
+        setHasMoreHistory(res.hasNext);
+    }
+
+    useEffect(() => {
+        const notificationFetchInterval = 5000;
+        let timerHandler;
+
+        const fetchNotification = async (lastTime) => {
+            if (lastTime) console.log("Getting notification at: " + lastTime.toISOString());
+            let queryUrl = `${process.env.REACT_APP_BASE_URL}/api/notification`;
+            if (lastTime !== null) {
+                queryUrl += `?dateTimeAfter=${lastTime.toISOString()}`
+            }
+            const res = await fetch(queryUrl, {
+                method: 'GET',
+                credentials: 'include',
+            }).then(r => r.json());
+
+            // Update data
+            console.log(res.data);
+            if (res.data.length > 0) {
+                setNotifContents(content => [...res.data, ...content])
+            }
+            if (lastTime === null) {
+               // Check if we have more notifications to read in history for the first call
+               if (res.hasNext) setHasMoreHistory(true);
+            }
+
+            // call fetch notifications in interval
+            if (lastTime === null) {
+                lastTime = new Date();
+                lastTime.setMinutes(lastTime.getMinutes() - lastTime.getTimezoneOffset());
+            }
+            else {
+                lastTime.setSeconds(lastTime.getSeconds() + notificationFetchInterval / 1000);
+            }
+            timerHandler = setTimeout(() => {
+                fetchNotification(lastTime);
+            }, notificationFetchInterval);
+        };
+        fetchNotification(null);
+
+        return () => {
+            console.log("Clearing notification timer handler")
+            clearTimeout(timerHandler);
+        };
+    }, [])
+
     return (
         <Box sx={{ flexShrink: 0, ml: 0.75 }}>
             <IconButton
@@ -78,7 +193,7 @@ const Notification = () => {
                 aria-haspopup="true"
                 onClick={handleToggle}
             >
-                <Badge badgeContent={4} color="primary">
+                <Badge badgeContent={notifContents.filter(c => !c.read).length} color="primary">
                     <BellOutlined />
                 </Badge>
             </IconButton>
@@ -136,131 +251,14 @@ const Notification = () => {
                                             }
                                         }}
                                     >
-                                        <ListItemButton>
-                                            <ListItemAvatar>
-                                                <Avatar
-                                                    sx={{
-                                                        color: 'success.main',
-                                                        bgcolor: 'success.lighter'
-                                                    }}
-                                                >
-                                                    <GiftOutlined />
-                                                </Avatar>
-                                            </ListItemAvatar>
-                                            <ListItemText
-                                                primary={
-                                                    <Typography variant="h6">
-                                                        It&apos;s{' '}
-                                                        <Typography component="span" variant="subtitle1">
-                                                            Cristina danny&apos;s
-                                                        </Typography>{' '}
-                                                        birthday today.
-                                                    </Typography>
-                                                }
-                                                secondary="2 min ago"
-                                            />
-                                            <ListItemSecondaryAction>
-                                                <Typography variant="caption" noWrap>
-                                                    3:00 AM
-                                                </Typography>
-                                            </ListItemSecondaryAction>
-                                        </ListItemButton>
-                                        <Divider />
-                                        <ListItemButton>
-                                            <ListItemAvatar>
-                                                <Avatar
-                                                    sx={{
-                                                        color: 'primary.main',
-                                                        bgcolor: 'primary.lighter'
-                                                    }}
-                                                >
-                                                    <MessageOutlined />
-                                                </Avatar>
-                                            </ListItemAvatar>
-                                            <ListItemText
-                                                primary={
-                                                    <Typography variant="h6">
-                                                        <Typography component="span" variant="subtitle1">
-                                                            Aida Burg
-                                                        </Typography>{' '}
-                                                        commented your post.
-                                                    </Typography>
-                                                }
-                                                secondary="5 August"
-                                            />
-                                            <ListItemSecondaryAction>
-                                                <Typography variant="caption" noWrap>
-                                                    6:00 PM
-                                                </Typography>
-                                            </ListItemSecondaryAction>
-                                        </ListItemButton>
-                                        <Divider />
-                                        <ListItemButton>
-                                            <ListItemAvatar>
-                                                <Avatar
-                                                    sx={{
-                                                        color: 'error.main',
-                                                        bgcolor: 'error.lighter'
-                                                    }}
-                                                >
-                                                    <SettingOutlined />
-                                                </Avatar>
-                                            </ListItemAvatar>
-                                            <ListItemText
-                                                primary={
-                                                    <Typography variant="h6">
-                                                        Your Profile is Complete &nbsp;
-                                                        <Typography component="span" variant="subtitle1">
-                                                            60%
-                                                        </Typography>{' '}
-                                                    </Typography>
-                                                }
-                                                secondary="7 hours ago"
-                                            />
-                                            <ListItemSecondaryAction>
-                                                <Typography variant="caption" noWrap>
-                                                    2:45 PM
-                                                </Typography>
-                                            </ListItemSecondaryAction>
-                                        </ListItemButton>
-                                        <Divider />
-                                        <ListItemButton>
-                                            <ListItemAvatar>
-                                                <Avatar
-                                                    sx={{
-                                                        color: 'primary.main',
-                                                        bgcolor: 'primary.lighter'
-                                                    }}
-                                                >
-                                                    C
-                                                </Avatar>
-                                            </ListItemAvatar>
-                                            <ListItemText
-                                                primary={
-                                                    <Typography variant="h6">
-                                                        <Typography component="span" variant="subtitle1">
-                                                            Cristina Danny
-                                                        </Typography>{' '}
-                                                        invited to join{' '}
-                                                        <Typography component="span" variant="subtitle1">
-                                                            Meeting.
-                                                        </Typography>
-                                                    </Typography>
-                                                }
-                                                secondary="Daily scrum meeting time"
-                                            />
-                                            <ListItemSecondaryAction>
-                                                <Typography variant="caption" noWrap>
-                                                    9:10 PM
-                                                </Typography>
-                                            </ListItemSecondaryAction>
-                                        </ListItemButton>
-                                        <Divider />
-                                        <ListItemButton sx={{ textAlign: 'center', py: `${12}px !important` }}>
+                                        {notifContents.map((content, idx) => (
+                                            <NotificationContent notificationInfo={content} onClickCallback={() => {setNotificationAsRead(idx)}} key={idx} />
+                                        ))}
+                                        <ListItemButton disabled={!hasMoreHistory} onClick={() => {fetchMoreDataInHistory();}} sx={{ textAlign: 'center', py: `${12}px !important` }}>
                                             <ListItemText
                                                 primary={
                                                     <Typography variant="h6" color="primary">
-                                                        View All
+                                                        View More
                                                     </Typography>
                                                 }
                                             />
