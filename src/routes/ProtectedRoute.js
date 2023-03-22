@@ -4,7 +4,7 @@ import {useContext} from "react";
 import {AuthContext} from "../global/AuthContext";
 
 const ProtectedRoute = () => {
-  const [ currentUser, setCurrentUser ] = useContext(AuthContext);
+  const [ currentUser, _ ] = useContext(AuthContext);
 
   console.log("Protected route user", currentUser)
 
