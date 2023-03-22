@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useContext, useEffect} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,9 +14,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { toast } from 'react-toastify';
 import SignOut from '../signout/SignOut';
 import { useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { userLogin } from '../../../redux/auth/authActions';
 import LoadingButton from '@mui/lab/LoadingButton';
+import {AuthContext} from "../../../global/AuthContext";
 
 function Copyright(props) {
   return (
@@ -34,32 +33,19 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignIn() {
+  const [ currentUser, setCurrentUser ] = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const { loading, userInfo, error } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-   const navigate = useNavigate();
-
-   useEffect(() => {
-    if(error){
-        console.log(error);
-        toast.error(error, {
-          autoClose: 2000, 
-          position: toast.POSITION.TOP_CENTER
-    })}
-    if (userInfo) {
-      toast.success("User signed in succesfully", {
-          autoClose: 2000, 
-          position: toast.POSITION.TOP_CENTER
-        });
-        console.log(userInfo.data.roles);
-      if (userInfo.data.roles[0] === "ROLE_USER" || userInfo.data.roles[0] === "ROLE_PATIENT"){
+  useEffect(() => {
+    if (currentUser.data !== null) {
+      if (currentUser.data.roles.includes("ROLE_PATIENT")) {
         navigate('/user-dashboard');
       }
-      if (userInfo.data.roles[1] === "ROLE_ORG_ADMIN" || userInfo.data.roles[1] === "ROLE_ORG_DENTIST"){
+      else if (currentUser.data.roles.includes("ROLE_ORG_ADMIN") || currentUser.data.roles.includes("ROLE_ORG_DENTIST")){
         navigate('/admin-dashboard')
       }
     }
-  }, [navigate, userInfo,error])
+  }, [currentUser])
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -70,19 +56,39 @@ export default function SignIn() {
       password: data.get('password'),
     };
 
-    dispatch(userLogin(postData))
+    const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify(postData)}
+    ).then(r => r.json());
 
-    
+    console.log(res);
+
+    if (res.success) {
+      toast.success("User signed in succesfully", {
+          autoClose: 2000,
+          position: toast.POSITION.TOP_CENTER
+        });
+      console.log(res.data.roles);
+      if (res.data.roles.includes("ROLE_PATIENT")) {
+        navigate('/user-dashboard');
+      }
+      else if (res.data.roles.includes("ROLE_ORG_ADMIN") || res.data.roles.includes("ROLE_ORG_DENTIST")){
+        navigate('/admin-dashboard')
+      }
+    }
   };
 
   const handleClickTest = () => {
-    fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/info`, { 
-    method: 'GET', 
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/info`, {
+    method: 'GET',
     credentials: 'include',
     }).then(dt => console.log(dt.json()))
   };
 
-  
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -138,7 +144,7 @@ export default function SignIn() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              loading={loading}
+              loading={false}
             >
               Test to get user info
             </LoadingButton>

@@ -9,20 +9,19 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './MainList';
 import { useEffect } from 'react';
 import UpcomingAppointments from './UpcomingAppointments';
 import Welcome from './Welcome';
 import SignOut from '../../accounts/signout/SignOut';
 import Points from './Points';
+import Notification from './Notification';
 
 function Copyright(props) {
   return (
@@ -164,12 +163,11 @@ function DashboardContent() {
             >
               Dashboard
             </Typography>
+            <Notification/>
             <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
                 <SignOut />
             </IconButton>
+
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>

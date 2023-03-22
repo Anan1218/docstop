@@ -1,12 +1,22 @@
 // ProtectedRoute.js
-import { useSelector } from 'react-redux'
 import { NavLink, Outlet } from 'react-router-dom'
+import {useContext} from "react";
+import {AuthContext} from "../global/AuthContext";
 
 const ProtectedRoute = () => {
-  const { userInfo } = useSelector((state) => state.auth)
+  const [ currentUser, setCurrentUser ] = useContext(AuthContext);
 
-  // show unauthorized screen if no user is found in redux store
-  if (!userInfo) {
+  console.log("Protected route user", currentUser)
+
+  // show unauthorized screen if no user is found in react context
+  if (currentUser.loading) {
+    return (
+      <div className='unauthorized'>
+        <h1>Checking user info</h1>
+      </div>
+    )
+  }
+  if (currentUser.data === null) {
     return (
       <div className='unauthorized'>
         <h1>Unauthorized :(</h1>

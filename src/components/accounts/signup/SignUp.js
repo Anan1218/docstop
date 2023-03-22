@@ -11,8 +11,6 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { toast } from 'react-toastify';
-import { useDispatch, useSelector } from 'react-redux'
-import { registerUser } from '../../../redux/auth/authActions';
 import { useNavigate } from 'react-router-dom';
 import LoadingButton from '@mui/lab/LoadingButton';
 
@@ -32,28 +30,8 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp () {
-    const { loading, userInfo, error, success } = useSelector(
-        (state) => state.auth
-    )
     const navigate = useNavigate()
-    const dispatch = useDispatch()
-    useEffect(() => {
-    if(error){
-        console.log(error);
-        toast.error(error, {
-          autoClose: 2000, 
-          position: toast.POSITION.TOP_CENTER
-    })}
-    if (success){
-        toast.success("User signed up succesfully", {
-          autoClose: 2000, 
-          position: toast.POSITION.TOP_CENTER
-        });
-        navigate('/signin')
-    }
-    if (userInfo) navigate('/dashboard')
-  }, [navigate, userInfo, success,error])
-  
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -64,31 +42,34 @@ export default function SignUp () {
         firstName: data.get('firstName'),
         lastName: data.get('lastName'),
         phoneNumber: data.get('phoneNumber'),
-        };
+      };
 
-    dispatch(registerUser(postData));
-    
-    // const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/signup`, { method: 'POST', headers: {
-    //   'Content-Type': 'application/json'
-    // },body: JSON.stringify(postData)})
+    const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify(postData)}
+    ).then(r => r.json());
 
-    // var tempRes = await res.json()
-    // console.log(tempRes)
+    console.log(res);
+
+    if(res.success){
+      toast.success("User signed up succesfully", {
+        autoClose: 2000,
+        position: toast.POSITION.TOP_CENTER
+      });
+      navigate('/signin')
     }
-    //   if(res.status === 200|| res.status === 201) {
-    //     toast.success("User signed up succesfully", {
-    //       autoClose: 2000, 
-    //       position: toast.POSITION.TOP_CENTER
-    //     })
-    //     console.log("user signed up succesfully")
-    //   } else {
-    //     toast.error(tempRes.data.message, {
-    //       autoClose: 2000, 
-    //       position: toast.POSITION.TOP_CENTER
-    //     })    
-    //   }
-
-
+    else {
+      console.log("Signup error", res);
+      toast.error(res.data.message, {
+        autoClose: 2000,
+        position: toast.POSITION.TOP_CENTER
+      })
+    }
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -172,9 +153,9 @@ export default function SignUp () {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              loading={loading}
+              loading={false}
             >
-                Sign Up {loading}
+                Sign Up {false}
             </LoadingButton>
             <Grid container justifyContent="flex-end">
               <Grid item>
