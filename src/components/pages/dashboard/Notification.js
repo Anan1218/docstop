@@ -65,8 +65,7 @@ const NotificationContent = ({notificationInfo, onClickCallback}) => {
           />
           <ListItemSecondaryAction>
               <Typography variant="caption" noWrap>
-                  {/*{time}*/}
-                  9:00 AM
+                  {notificationInfo.createdAt}
               </Typography>
           </ListItemSecondaryAction>
         </ListItemButton>
