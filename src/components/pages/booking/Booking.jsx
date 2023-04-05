@@ -134,7 +134,7 @@ function BookingContent() {
     // }]);
 
     const fetchData = async () => {
-      const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/appointment`, { 
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/appointment`, { 
       method: 'GET', 
       credentials: 'include',
       });
