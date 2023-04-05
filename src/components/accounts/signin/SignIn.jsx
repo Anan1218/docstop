@@ -72,7 +72,7 @@ export default function SignIn() {
           autoClose: 2000,
           position: toast.POSITION.TOP_CENTER
         });
-      console.log(res.data.roles);
+      setCurrentUser({loading: false, data: res })
       if (res.data.roles.includes("ROLE_PATIENT")) {
         navigate('/user-dashboard');
       }
