@@ -21,7 +21,7 @@ import Badges from './Badges';
 import Welcome from './Welcome';
 import SignOut from '../../accounts/signout/SignOut';
 import Calender from './Calender';
-import Notification from './Notification';
+import Notification from '../../notification/Notification';
 
 function Copyright(props) {
   return (
@@ -93,8 +93,8 @@ function AdminDashboardContent() {
 
   useEffect(()=> {
     const fetchData = async () => {
-    const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/info`, { 
-    method: 'GET', 
+    const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/info`, {
+    method: 'GET',
     credentials: 'include',
     });
 
