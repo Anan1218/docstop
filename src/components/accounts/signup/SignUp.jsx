@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -13,6 +13,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import LoadingButton from '@mui/lab/LoadingButton';
+import {AuthContext} from "../../../global/AuthContext";
 
 function Copyright(props) {
   return (
@@ -30,7 +31,19 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp () {
+    const [currentUser] = useContext(AuthContext);
     const navigate = useNavigate()
+
+    useEffect(() => {
+      if (currentUser.data !== null) {
+        if (currentUser.data.roles.includes("ROLE_PATIENT")) {
+          navigate('/user-dashboard');
+        }
+        else if (currentUser.data.roles.includes("ROLE_ORG_ADMIN") || currentUser.data.roles.includes("ROLE_ORG_DENTIST")){
+          navigate('/admin-dashboard')
+        }
+      }
+    }, [currentUser])
 
     const handleSubmit = async (event) => {
         event.preventDefault();

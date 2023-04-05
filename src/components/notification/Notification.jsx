@@ -21,8 +21,8 @@ import {
 } from '@mui/material';
 
 // project import
-import MainCard from '../../notiComponents/MainCard';
-import Transitions from '../../notiComponents/@extended/Transitions';
+import MainCard from '../notiComponents/MainCard';
+import Transitions from '../notiComponents/@extended/Transitions';
 
 // assets
 import { BellOutlined, CloseOutlined } from '@ant-design/icons';
@@ -65,7 +65,6 @@ const NotificationContent = ({notificationInfo, onClickCallback}) => {
           />
           <ListItemSecondaryAction>
               <Typography variant="caption" noWrap>
-                  {/* {time} */}
                   {notificationInfo.createdAt}
               </Typography>
           </ListItemSecondaryAction>
@@ -252,9 +251,9 @@ const Notification = () => {
                                         }}
                                     >
                                         {notifContents.length === 0 ? <div>Oops, no notification right now</div> :
-                                        notifContents.map((content, idx) => (
+                                          notifContents.map((content, idx) => (
                                             <NotificationContent notificationInfo={content} onClickCallback={() => {setNotificationAsRead(idx)}} key={idx} />
-                                        ))}
+                                          ))}
                                         <ListItemButton disabled={!hasMoreHistory} onClick={() => {fetchMoreDataInHistory();}} sx={{ textAlign: 'center', py: `${12}px !important` }}>
                                             <ListItemText
                                                 primary={

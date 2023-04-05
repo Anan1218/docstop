@@ -19,16 +19,85 @@ import {
   MonthView,
   Appointments, DateNavigator, TodayButton, AppointmentTooltip,
 } from '@devexpress/dx-react-scheduler-material-ui';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
-const schedulerData = [
-  { startDate: '2018-11-01T09:45', endDate: '2018-11-01T11:00', title: 'Meeting' },
-  { startDate: '2018-11-01T12:00', endDate: '2018-11-01T13:30', title: 'Go to a gym' },
-];
+function dateStrInYMD(date) {
+  const dateStr = date.getFullYear()  + "-" +
+    (date.getMonth()+1).toString().padStart(2, "0") + "-" +
+    date.getDate().toString().padStart(2, "0");
+  // console.log(dateStr)
+  return dateStr  // return yyyy-mm-dd
+}
 
+function dateStrInYMDT(date) {
+  const dateStr = date.getFullYear()  + "-" +
+    (date.getMonth()+1).toString().padStart(2, "0") + "-" +
+    date.getDate().toString().padStart(2, "0") + "T" +
+    date.getHours().toString().padStart(2, "0") + ":" +
+    date.getMinutes().toString().padStart(2, "0");
+  // console.log(dateStr)
+  return dateStr  // return yyyy-mm-ddThh:mm
+}
+
+// TODO: Data loader, incremental fetch, past appointments
 export default function Calender() {
+  // Calender state
   const [age, setAge] = useState(0);
-  const [curDate, setCurDate] = useState('2018-11-01');
+  const [curDate, setCurDate] = useState(dateStrInYMD(new Date()));
+
+  // Remote data state
+  // Each data is { startDate: '2023-04-01T09:45', endDate: '2023-04-01T11:00', title: 'Meeting' }
+  // const [pastAppointments, setPastAppointments] = useState({data: [], hasNext: true})
+  const [upAppointments, setUpAppointments] = useState({data: [], hasNext: true})
+
+  const fetchUpcomingAppointment = async () => {
+    // Don't fetch if we don't have future data
+    if (!upAppointments.hasNext) return
+
+    // Fetch with furthest date as our base
+    const furthestDate =  upAppointments.data.length > 0 ?
+      upAppointments.data[upAppointments.data.length - 1].slice(10) : dateStrInYMD(new Date())
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/appointment/upcoming?dateAfter=${furthestDate}`, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include'
+    }
+    ).then(r => r.json());
+    console.log(res)
+
+    // Remove duplicate appointments (same date)
+    let skipCount = 0
+    if (upAppointments.data.length > 0 && res.data.length > 0) {
+      let dupDate = upAppointments.data[upAppointments.data.length - 1].slice(10)
+      console.log("Checking duplicate date for: " + dupDate)
+      for (let i = upAppointments.data.length - 1; i >= 0; i--) {
+        if (upAppointments.data[i].startsWith(dupDate)) {
+          skipCount++
+        }
+        else break
+      }
+    }
+
+    // TODO: custom content tooltip, different color for appointment state
+    // Result
+    let newData = upAppointments.data.slice()
+    for (let i = skipCount; i < res.data.length; i++) {
+      newData.push({
+        startDate: `${res.data[i].date}T${res.data[i].startTime.slice(0, 5)}`,
+        endDate: `${res.data[i].date}T${res.data[i].endTime.slice(0, 5)}`,
+        title: `${res.data[i].dentist.firstName} ${res.data[i].dentist.lastName}`,
+      })
+    }
+
+    // update state
+    setUpAppointments(app => ({...app, data: newData, hasNext: res.data.hasNext}))
+  }
+
+  useEffect(() => {
+    fetchUpcomingAppointment()
+  }, []);
+
 
   const handleChange = (event) => {
     setAge(event.target.value);
@@ -84,7 +153,7 @@ export default function Calender() {
 
           {/* Time title and range slider */}
           <Box sx={{display: 'flex', alignItems: 'center', gap: '15px'}}>
-            <Typography variant="h4" component="h4">Day xx</Typography>
+            <Typography variant="h4" component="h4">Appointments</Typography>
           </Box>
 
           <Box/>
@@ -94,8 +163,11 @@ export default function Calender() {
 
       {/* Scheduling Table */}
       <Paper>
-        <Scheduler data={schedulerData} height={400}>
-          <ViewState currentDate={curDate} onCurrentDateChange={(selectedDate) => setCurDate(selectedDate)}/>
+        <Scheduler data={upAppointments.data} height={400}>
+          <ViewState currentDate={curDate} onCurrentDateChange={(selectedDate) => {
+            console.log(selectedDate);
+            setCurDate(selectedDate);
+          }}/>
           <MonthView />
           <WeekView startDayHour={9} endDayHour={19}/>
           <DayView startDayHour={9} endDayHour={14}/>

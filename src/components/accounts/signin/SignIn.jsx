@@ -33,7 +33,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignIn() {
-  const [ currentUser, setCurrentUser ] = useContext(AuthContext);
+  const [ currentUser, _,  fetchUserInfo ] = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -68,6 +68,7 @@ export default function SignIn() {
     console.log(res);
 
     if (res.success) {
+      fetchUserInfo();  // force context user to refresh
       toast.success("User signed in succesfully", {
           autoClose: 2000,
           position: toast.POSITION.TOP_CENTER
@@ -78,6 +79,12 @@ export default function SignIn() {
       }
       else if (res.data.roles.includes("ROLE_ORG_ADMIN") || res.data.roles.includes("ROLE_ORG_DENTIST")){
         navigate('/admin-dashboard')
+      }
+      else {
+        toast.warning("User is not registered as dentist or patient", {
+          autoClose: 2000,
+          position: toast.POSITION.TOP_CENTER
+        });
       }
     }
   };

@@ -20,8 +20,8 @@ function App() {
         <Route exact path="/" element={<Home/>} />
         <Route element={<SignIn />} exact path="/signin"/>
         <Route element={<SignUp />} exact path="/signup"/>
-        <Route element={<Schedule />} exact path="/schedule"/>
         <Route element={<ProtectedRoute />}>
+          <Route element={<Schedule />} exact path="/schedule"/>
           <Route element= {<Dashboard />} exact path='/user-dashboard' />
           <Route element= {<AdminDashboard />} exact path='/admin-dashboard' />
         </Route>
