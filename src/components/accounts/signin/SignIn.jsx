@@ -56,7 +56,7 @@ export default function SignIn() {
       password: data.get('password'),
     };
 
-    const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/login`, {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -73,7 +73,7 @@ export default function SignIn() {
           autoClose: 2000,
           position: toast.POSITION.TOP_CENTER
         });
-      console.log(res.data.roles);
+      setCurrentUser({loading: false, data: res })
       if (res.data.roles.includes("ROLE_PATIENT")) {
         navigate('/user-dashboard');
       }
@@ -90,7 +90,7 @@ export default function SignIn() {
   };
 
   const handleClickTest = () => {
-    fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/info`, {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/info`, {
     method: 'GET',
     credentials: 'include',
     }).then(dt => console.log(dt.json()))

@@ -7,7 +7,7 @@ const SignOut = () => {
 
    const navigate = useNavigate();
   const handleClickLogOut = async () => {
-    const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/logout`, {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/logout`, {
       method: 'GET',
       credentials: 'include',
     }).then(r => r.json());

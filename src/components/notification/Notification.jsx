@@ -102,7 +102,7 @@ const Notification = () => {
 
     const setNotificationAsRead = async (idx) => {
         if (notifContents[idx].read) return;  // stop if notification is already read
-        let queryUrl = `${process.env.REACT_APP_BASE_URL}/api/notification/${notifContents[idx].id}`;
+        let queryUrl = `${import.meta.env.VITE_BACKEND_URL}/api/notification/${notifContents[idx].id}`;
         const res = await fetch(queryUrl, {
             method: 'GET',
             credentials: 'include',
@@ -120,7 +120,7 @@ const Notification = () => {
         let lastDate = new Date(notifContents[notifContents.length - 1].createdAt);
         lastDate.setMinutes(lastDate.getMinutes() - lastDate.getTimezoneOffset());
         console.log(lastDate.toISOString());
-        let queryUrl = `${process.env.REACT_APP_BASE_URL}/api/notification?dateTimeBefore=${lastDate.toISOString()}`;
+        let queryUrl = `${import.meta.env.VITE_BACKEND_URL}/api/notification?dateTimeBefore=${lastDate.toISOString()}`;
         const res = await fetch(queryUrl, {
             method: 'GET',
             credentials: 'include',
@@ -141,7 +141,7 @@ const Notification = () => {
 
         const fetchNotification = async (lastTime) => {
             if (lastTime) console.log("Getting notification at: " + lastTime.toISOString());
-            let queryUrl = `${process.env.REACT_APP_BASE_URL}/api/notification`;
+            let queryUrl = `${import.meta.env.VITE_BACKEND_URL}/api/notification`;
             if (lastTime !== null) {
                 queryUrl += `?dateTimeAfter=${lastTime.toISOString()}`
             }
@@ -250,9 +250,10 @@ const Notification = () => {
                                             }
                                         }}
                                     >
-                                        {notifContents.map((content, idx) => (
+                                        {notifContents.length === 0 ? <div>Oops, no notification right now</div> :
+                                          notifContents.map((content, idx) => (
                                             <NotificationContent notificationInfo={content} onClickCallback={() => {setNotificationAsRead(idx)}} key={idx} />
-                                        ))}
+                                          ))}
                                         <ListItemButton disabled={!hasMoreHistory} onClick={() => {fetchMoreDataInHistory();}} sx={{ textAlign: 'center', py: `${12}px !important` }}>
                                             <ListItemText
                                                 primary={

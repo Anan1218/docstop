@@ -57,7 +57,7 @@ export default function Calender() {
     // Fetch with furthest date as our base
     const furthestDate =  upAppointments.data.length > 0 ?
       upAppointments.data[upAppointments.data.length - 1].slice(10) : dateStrInYMD(new Date())
-    const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/appointment/upcoming?dateAfter=${furthestDate}`, {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/appointment/upcoming?dateAfter=${furthestDate}`, {
       headers: {
         'Content-Type': 'application/json'
       },

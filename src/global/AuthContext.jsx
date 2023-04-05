@@ -7,7 +7,7 @@ export const AuthContextProvider = (props) => {
 
   async function fetchUserInfo() {
     // TODO: Save state inside localstorage to avoid constant info fetching?
-    let userInfo = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/info`, {
+    let userInfo = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/info`, {
       method: 'GET',
       credentials: 'include',
     }).then(dt => dt.json());

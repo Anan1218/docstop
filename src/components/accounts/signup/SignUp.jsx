@@ -57,7 +57,7 @@ export default function SignUp () {
         phoneNumber: data.get('phoneNumber'),
       };
 
-    const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/signup`, {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

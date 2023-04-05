@@ -17,10 +17,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { mainListItems, secondaryListItems } from './MainList';
 import { useEffect } from 'react';
-import UpcomingAppointments from './UpcomingAppointments';
+import Badges from './Badges';
 import Welcome from './Welcome';
 import SignOut from '../../accounts/signout/SignOut';
-import Points from './Points';
+import Calender from './Calender';
 import Notification from '../../notification/Notification';
 
 function Copyright(props) {
@@ -84,43 +84,25 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function DashboardContent() {
+function AdminDashboardContent() {
   const [open, setOpen] = useState(true);
   const [userInfo, setInfo] = useState('');
-  const [upcomingApt, setUpcomingApt] = useState({});
-  const [loading, setLoading] = useState(true)
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
   useEffect(()=> {
     const fetchData = async () => {
-      const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/info`, {
-      method: 'GET',
-      credentials: 'include',
-      });
-
-      var tempRes = await res.json();
-      console.log(tempRes.data.username);
-      setInfo(tempRes.data.username);
-    }
-
-   const fetchUpcomingAppt = async () => {
-      const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/appointment/upcoming`, {
-      method: 'GET',
-      credentials: 'include'
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/info`, {
+    method: 'GET',
+    credentials: 'include',
     });
 
-      var tempRes = await res.json();
-      console.log(tempRes);
-      setUpcomingApt(tempRes);
-      setLoading(false);
-      // setInfo(tempRes.data.username);
+    var tempRes = await res.json();
+    console.log(tempRes.data.username);
+    setInfo(tempRes.data.username);
+  }
 
-    }
-
-  fetchUpcomingAppt()
-    .catch(console.error);
   // call the function
   fetchData()
     // make sure to catch any error
@@ -128,9 +110,6 @@ function DashboardContent() {
 
   }, [])
 
-  if(loading){
-    return <h1>Loading...</h1>
-  }
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
@@ -151,7 +130,6 @@ function DashboardContent() {
                 ...(open && { display: 'none' }),
               }}
             >
-            {console.log(upcomingApt)}
               <MenuIcon />
             </IconButton>
             <Typography
@@ -161,13 +139,12 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              Admin Dashboard
             </Typography>
-            <Notification/>
             <IconButton color="inherit">
+                <Notification />
                 <SignOut />
             </IconButton>
-
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -228,13 +205,13 @@ function DashboardContent() {
                     height: 240,
                   }}
                 >
-                <Points/>
+                <Badges/>
                 </Paper>
               </Grid>
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <UpcomingAppointments upcomingApt={upcomingApt}/>
+                <Calender/>
                 </Paper>
               </Grid>
             </Grid>
@@ -246,6 +223,6 @@ function DashboardContent() {
   );
 }
 
-export default function Dashboard() {
-  return <DashboardContent />;
+export default function AdminDashboard() {
+  return <AdminDashboardContent />;
 }
