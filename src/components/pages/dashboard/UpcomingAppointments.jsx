@@ -1,7 +1,37 @@
-import { Typography } from '@mui/material';
+import { Avatar, Divider, ListItemAvatar, ListItemText, ListItemButton, ListItemSecondaryAction, Typography } from '@mui/material';
 import React from 'react';
 import Title from './Title';
 
+const UpcomingAppointmentListView = ({appointmentInfo}) => {
+    // TODO: Avatar icon
+    return (
+      <>
+        <ListItemButton >
+          <ListItemAvatar>
+              <Avatar
+                sx={{
+                    color: 'primary.main',
+                    bgcolor: 'primary.lighter'
+                }}
+              >
+                  C
+              </Avatar>
+          </ListItemAvatar>
+          <ListItemText
+            primary={`You have a visit on ${appointmentInfo.date} at ${appointmentInfo.startTime}`}
+            secondary={`with ${appointmentInfo.dentist.firstName} ${appointmentInfo.dentist.lastName}`}
+          />
+          <ListItemSecondaryAction>
+              <Typography variant="caption" noWrap>
+                 <button>Confirm Appointment</button>
+                 <button>Cancel Appointment</button>
+              </Typography>
+          </ListItemSecondaryAction>
+        </ListItemButton>
+        <Divider />
+      </>
+    )
+}
 
 export default function UpcomingAppointments( {upcomingApt} ) {
 
@@ -10,12 +40,7 @@ export default function UpcomingAppointments( {upcomingApt} ) {
       <Title>Upcoming Appointments</Title>
       {upcomingApt.data.map((appointment, idx) => 
       <div key={idx}>
-      <Typography variant="body1" >
-        {`You have a visit on ${appointment.date} at ${appointment.startTime}`}
-      </Typography>
-      <Typography variant="body2">
-        {`with ${appointment.dentist.firstName} ${appointment.dentist.lastName}`}
-      </Typography>
+        <UpcomingAppointmentListView  appointmentInfo={appointment} />
       </div>)
       }
       
