@@ -93,7 +93,7 @@ function AdminDashboardContent() {
 
   useEffect(()=> {
     const fetchData = async () => {
-    const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/info`, { 
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/info`, { 
     method: 'GET', 
     credentials: 'include',
     });

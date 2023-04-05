@@ -95,7 +95,7 @@ function DashboardContent() {
 
   useEffect(()=> {
     const fetchData = async () => {
-      const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/info`, { 
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/info`, { 
       method: 'GET', 
       credentials: 'include',
       });
@@ -106,7 +106,7 @@ function DashboardContent() {
     }
 
    const fetchUpcomingAppt = async () => {
-      const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/appointment/upcoming`, { 
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/appointment/upcoming`, { 
       method: 'GET', 
       credentials: 'include'
     });
