@@ -25,7 +25,7 @@ import MainCard from '../../notiComponents/MainCard';
 import Transitions from '../../notiComponents/@extended/Transitions';
 
 // assets
-import { BellOutlined, CloseOutlined, GiftOutlined, MessageOutlined, SettingOutlined } from '@ant-design/icons';
+import { BellOutlined, CloseOutlined } from '@ant-design/icons';
 
 // sx styles
 const avatarSX = {

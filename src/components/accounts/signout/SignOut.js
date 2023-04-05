@@ -1,9 +1,11 @@
 import {Button} from '@mui/material'
 import React from 'react'
+import { useNavigate } from 'react-router';
 import {toast} from 'react-toastify';
 
 const SignOut = () => {
 
+   const navigate = useNavigate();
   const handleClickLogOut = async () => {
     const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/logout`, {
       method: 'GET',
@@ -15,6 +17,7 @@ const SignOut = () => {
         autoClose: 2000,
         position: toast.POSITION.TOP_CENTER
       })
+      navigate('/')
       console.log("user logged out succesfully")
     } else {
       toast.error(res.data.message, {
