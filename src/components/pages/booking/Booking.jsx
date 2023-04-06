@@ -14,57 +14,9 @@ import { eachHourOfInterval, isWithinInterval, subMinutes } from 'date-fns'
 
 import { useEffect } from 'react';
 
-
-
-const drawerWidth = 240;
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(['width', 'margin'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100%px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
-
-// const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-//   ({ theme, open }) => ({
-//     '& .MuiDrawer-paper': {
-//       position: 'relative',
-//       whiteSpace: 'nowrap',
-//       width: drawerWidth,
-//       transition: theme.transitions.create('width', {
-//         easing: theme.transitions.easing.sharp,
-//         duration: theme.transitions.duration.enteringScreen,
-//       }),
-//       boxSizing: 'border-box',
-//       ...(!open && {
-//         overflowX: 'hidden',
-//         transition: theme.transitions.create('width', {
-//           easing: theme.transitions.easing.sharp,
-//           duration: theme.transitions.duration.leavingScreen,
-//         }),
-//         width: theme.spacing(7),
-//         [theme.breakpoints.up('sm')]: {
-//           width: theme.spacing(9),
-//         },
-//       }),
-//     },
-//   }),
-// );
-
 const mdTheme = createTheme();
 
-function BookingContent() {
+const Booking = () => {
   const [open, setOpen] = useState(true);
   const [availAppts, setAvailAppts] = useState([]);
   //const [doctors, setDoctors] = useState([]);
@@ -93,7 +45,7 @@ function BookingContent() {
         availTimeSlots: availAppts,
         appointments: availAppts.length,
       },
-    ],
+      ],
     },
     {
       name: "Mengan Wang",
@@ -116,7 +68,7 @@ function BookingContent() {
         availTimeSlots: timeSlots0,
         appointments: 0,
       },
-    ],
+      ],
     },
   ];
 
@@ -124,7 +76,7 @@ function BookingContent() {
     setOpen(!open);
   };
 
-  useEffect(()=> {
+  useEffect(() => {
     // make sure to call from postman instead
     // setDoctors(doctors => [...doctors, {
     //   name: "test",
@@ -134,9 +86,9 @@ function BookingContent() {
     // }]);
 
     const fetchData = async () => {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/appointment`, { 
-      method: 'GET', 
-      credentials: 'include',
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/appointment`, {
+        method: 'GET',
+        credentials: 'include',
       });
 
       var tempRes = await res.json();
@@ -154,10 +106,10 @@ function BookingContent() {
     //     endTime = i.startTime
     //     arr.append({starttime, endtime})
     //     starttime = i.endTime
-      
+
     //   if starttime != 9pm:
     //     arr.append({starttime, 9pm})
-        
+
     //   return arr 
 
 
@@ -171,10 +123,10 @@ function BookingContent() {
       let startTime = new Date('2023-03-30T08:00:00');
       let endTime = new Date('2023-03-30T17:00:00');
       let timeSlots = eachHourOfInterval({ start: startTime, end: endTime });
-      for(let i = 0; i < data.length; i++){
-        doctorAppt.push([data[i].id, new Date(data[i].date+"T"+data[i].startTime), new Date(data[i].date+"T"+data[i].endTime)]);
+      for (let i = 0; i < data.length; i++) {
+        doctorAppt.push([data[i].id, new Date(data[i].date + "T" + data[i].startTime), new Date(data[i].date + "T" + data[i].endTime)]);
       }
-      for(let i = 0; i < timeSlots.length; i++){
+      for (let i = 0; i < timeSlots.length; i++) {
         let slotAvailable = true;
         for (let j = 0; j < doctorAppt.length; j++) {
           if (isWithinInterval(timeSlots[i], { start: doctorAppt[j][1], end: subMinutes(doctorAppt[j][2], 1) })) {
@@ -189,78 +141,25 @@ function BookingContent() {
       console.log("doctorAppt", doctorAppt);
       console.log("availableSlots", availableSlots);
       return availableSlots;
-  }
+    }
 
 
-  // call the function
-  fetchData()
-    // make sure to catch any error
-    .catch(console.error);
+    // call the function
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
 
   }, [])
 
   return (
     <ThemeProvider theme={mdTheme}>
-        <Box sx={{ display: 'flex' }}>
-          {/* <CssBaseline /> */}
-          <AppBar position="absolute" open={open}>
-          <Toolbar
-            sx={{
-              pr: '24px', // keep right padding when drawer closed
-            }}
-          >
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={toggleDrawer}
-              sx={{
-                marginRight: '36px',
-                ...(open && { display: 'none' }),
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              sx={{ flexGrow: 1 }}
-            >
-              Booking
-            </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-          </Toolbar>
-          </AppBar>
-        </Box>
-        <Box style={{paddingTop: 100}}>
-          { doctors.map((data, index) => (
-              <Doctor data = {data}/>
-          ))}
-            {/* <p>hello</p> */}
-          {/*
-          Face
-              use avatar
-          Name
-          Title
-          Rating
-          Distance
-          Next Dates */}
-
-          {/* onClick Open Popup to select times */}
-
-          {/* onclick take to book appointment */}
-
-        </Box>
+      <Box style={{ paddingTop: 100 }}>
+        {doctors.map((data) => (
+          <Doctor data={data} key={crypto.randomUUID()} />
+        ))}
+      </Box>
     </ThemeProvider>
   );
 }
 
-export default function Booking() {
-  return <BookingContent />;
-}
+export default Booking;
