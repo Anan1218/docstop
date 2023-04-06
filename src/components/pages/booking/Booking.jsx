@@ -9,6 +9,9 @@ import Badge from '@mui/material/Badge';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Doctor from './Doctor';
+import Container from '@mui/material/Container'
+import Grid from '@mui/material/Grid';
+import List from '@mui/material/List'
 import { eachHourOfInterval, isWithinInterval, subMinutes } from 'date-fns'
 
 
@@ -71,6 +74,32 @@ const Booking = () => {
       ],
     },
   ];
+
+  for (let i = 0; i < 10; i++) {
+    doctors.push({
+      name: `Test Doc #${i + 1}`,
+      title: "D.D.S",
+      occupation: "Dentist",
+      rating: 4.9,
+      location: "10995 Le Conte Ave, Los Angeles, CA 90024",
+      dates: [{
+        date: "March 6",
+        availTimeSlots: availAppts,
+        appointments: availAppts.length,
+      },
+      {
+        date: "March 7",
+        availTimeSlots: timeSlots0,
+        appointments: 0,
+      },
+      {
+        date: "March 8",
+        availTimeSlots: availAppts,
+        appointments: availAppts.length,
+      },
+      ],
+    })
+  }
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -153,10 +182,19 @@ const Booking = () => {
 
   return (
     <ThemeProvider theme={mdTheme}>
-      <Box style={{ paddingTop: 100 }}>
-        {doctors.map((data) => (
-          <Doctor data={data} key={crypto.randomUUID()} />
-        ))}
+      <Box style={{backgroundColor: "#DCEBF7"}}>
+        <Container>
+          <Grid container>
+            <Grid container item xs={6} style={{ minWidth: "36em" }}>
+              {doctors.slice(0, doctors.length).map((renderData, i) =>
+                i % 2 == 0 ? <Doctor data={renderData} key={crypto.randomUUID()} /> : <></>)}
+            </Grid>
+            <Grid container item xs={6} style={{ minWidth: "36em" }}>
+              {doctors.slice(0, doctors.length).map((renderData, i) =>
+                i % 2 == 1 ? <Doctor data={renderData} key={crypto.randomUUID()} /> : <></>)}
+            </Grid>
+          </Grid>
+        </Container>
       </Box>
     </ThemeProvider>
   );

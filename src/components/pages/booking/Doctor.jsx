@@ -11,6 +11,8 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Button from '@mui/material/Button'
 import { createTheme, responsiveFontSizes, ThemeProvider } from '@mui/material/styles';
 
+// TODO: make responsive for smaller screens
+
 import './Booking.css';
 
 import { Card } from "@mui/material"
@@ -21,7 +23,7 @@ mdTheme = responsiveFontSizes(mdTheme);
 
 const Doctor = (props) => {
   return <ThemeProvider theme={mdTheme}>
-    <Card style={{ maxWidth: "35em", margin: "5%", padding: "1em" }}>
+    <Card style={{ width: "36em", height: "7em", margin: "1.5%", padding: "1em" }}>
       <Grid container>
         <Grid xs={2}>
           <Avatar style={{marginTop: "1em"}} src={props.avatar} sx={{ width: 80, height: 80 }} />
@@ -49,8 +51,8 @@ const Doctor = (props) => {
           </Stack>
         </Grid>
         <Grid item xs={3}>
-          <Stack spacing={2} style={{ alignItems: "center", paddingTop: "1em" }}>
-            <Button variant="contained" style={{ textTransform: "unset", padding: "0.3em 2.5em 0.3em 2.5em" }}>Book</Button>
+          <Stack spacing={2} style={{ paddingTop: "1em", marginLeft: "0.5em" }}>
+            <Button variant="contained" style={{ textTransform: "unset" }}>Book</Button>
             <Button variant="outlined" style={{ textTransform: "unset" }}>View Reviews</Button>
           </Stack>
         </Grid>
