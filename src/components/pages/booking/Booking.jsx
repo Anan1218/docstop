@@ -187,11 +187,12 @@ const Booking = () => {
   }, [])
 
   // todo: make responsive
+  // todo: split into subcomponents
 
   return (
     <ThemeProvider theme={mdTheme}>
       <Box style={{ backgroundColor: "#FFFFFF", padding: "1em" }}>
-        <Container>
+        <Container style={{marginTop: "2.5em"}}>
           <Grid container style={{ marginBottom: "2em" }}>
             <Grid item xs={3.75}>
               <TextField
