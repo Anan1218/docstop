@@ -13,7 +13,13 @@ import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List'
 import { eachHourOfInterval, isWithinInterval, subMinutes } from 'date-fns'
-
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import FormControl from '@mui/material/FormControl';
+import TextField from '@mui/material/TextField';
+import SearchIcon from '@mui/icons-material/SearchOutlined';
+import LocationOnIcon from '@mui/icons-material/LocationOnOutlined';
 
 import { useEffect } from 'react';
 
@@ -55,7 +61,7 @@ const Booking = () => {
       title: "D.D.S",
       occupation: "Doctor",
       rating: 4.8,
-      location: "UCLA",
+      location: "405 Hilgard Avenue Box 951405 Los Angeles, CA 90095",
       dates: [{
         date: "March 6",
         availTimeSlots: availAppts,
@@ -180,9 +186,60 @@ const Booking = () => {
 
   }, [])
 
+  // todo: make responsive
+
   return (
     <ThemeProvider theme={mdTheme}>
-      <Box style={{backgroundColor: "#DCEBF7"}}>
+      <Box style={{ backgroundColor: "#FFFFFF", padding: "1em" }}>
+        <Container>
+          <Grid container style={{ marginBottom: "2em" }}>
+            <Grid item xs={3.75}>
+              <TextField
+                placeholder="provider, dentist, procedure, condition"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+                variant="outlined"
+                style={{ width: "21em" }}
+              />
+            </Grid>
+            <Grid item xs={2.6}>
+              <TextField
+                placeholder="city, state, or zip code"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <LocationOnIcon />
+                    </InputAdornment>
+                  ),
+                }}
+                variant="outlined"
+                style={{ width: "14em" }}
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                type="datetime-local"
+                variant="outlined"
+                style={{ width: "14em" }}
+              />
+            </Grid>
+          </Grid>
+          <Grid container>
+            <Grid item xs={8}>
+              <h2 style={{ textAlign: "start", marginLeft: "1%" }}>All Dentists</h2>
+            </Grid>
+            <Grid item xs>
+              <p style={{ marginTop: "2%" }}>Availability last updated 3:15pm PST 03/05/2023</p>
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
+      <Box style={{ backgroundColor: "#DCEBF7" }}>
         <Container>
           <Grid container>
             <Grid container item xs={6} style={{ minWidth: "36em" }}>

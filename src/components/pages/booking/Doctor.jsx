@@ -13,8 +13,6 @@ import { createTheme, responsiveFontSizes, ThemeProvider } from '@mui/material/s
 
 // TODO: make responsive for smaller screens
 
-import './Booking.css';
-
 import { Card } from "@mui/material"
 import './Booking.css';
 
@@ -26,7 +24,7 @@ const Doctor = (props) => {
     <Card style={{ width: "36em", height: "7em", margin: "1.5%", padding: "1em" }}>
       <Grid container>
         <Grid xs={2}>
-          <Avatar style={{marginTop: "1em"}} src={props.avatar} sx={{ width: 80, height: 80 }} />
+          <Avatar style={{ marginTop: "1em" }} src={props.avatar} sx={{ width: 80, height: 80 }} />
         </Grid>
         <Grid xs={7}>
           <Stack spacing={1.1}>
