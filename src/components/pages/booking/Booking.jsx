@@ -20,6 +20,7 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/SearchOutlined';
 import LocationOnIcon from '@mui/icons-material/LocationOnOutlined';
+import DropdownSearch from "./DropdownSearch";
 
 import { useEffect } from 'react';
 
@@ -195,18 +196,7 @@ const Booking = () => {
         <Container style={{marginTop: "2.5em"}}>
           <Grid container style={{ marginBottom: "2em" }}>
             <Grid item xs={3.75}>
-              <TextField
-                placeholder="provider, dentist, procedure, condition"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon />
-                    </InputAdornment>
-                  ),
-                }}
-                variant="outlined"
-                style={{ width: "21em" }}
-              />
+            <DropdownSearch />
             </Grid>
             <Grid item xs={2.6}>
               <TextField
