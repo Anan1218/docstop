@@ -20,12 +20,14 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/SearchOutlined';
 import LocationOnIcon from '@mui/icons-material/LocationOnOutlined';
+import Dropdown from "./Dropdown";
 
 import { useEffect } from 'react';
 
 const mdTheme = createTheme();
 
 const Booking = () => {
+  const [showDropdown, setShowDropdown] = useState(false)
   const [open, setOpen] = useState(true);
   const [availAppts, setAvailAppts] = useState([]);
   //const [doctors, setDoctors] = useState([]);
@@ -204,9 +206,16 @@ const Booking = () => {
                     </InputAdornment>
                   ),
                 }}
+                onChange={(e) => {
+                  setShowDropdown(true)
+                }}
+                onBlur={(e) => {
+                  setShowDropdown(false)
+                }}
                 variant="outlined"
                 style={{ width: "21em" }}
               />
+              { showDropdown ? <Dropdown /> : <></> }
             </Grid>
             <Grid item xs={2.6}>
               <TextField
