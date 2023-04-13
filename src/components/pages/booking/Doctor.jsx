@@ -51,7 +51,7 @@ const Doctor = (props) => {
         <Grid item xs={3}>
           <Stack spacing={2} style={{ paddingTop: "1em", marginLeft: "0.5em" }}>
             <Button variant="contained" style={{ textTransform: "unset" }}>Book</Button>
-            <Button variant="outlined" style={{ textTransform: "unset" }}>View Reviews</Button>
+            <Button variant="outlined" style={{ textTransform: "unset", width: "100%", marginTop: "1em" }}>View Reviews</Button>
           </Stack>
         </Grid>
       </Grid>

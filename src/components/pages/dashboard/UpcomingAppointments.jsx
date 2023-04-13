@@ -1,4 +1,4 @@
-import { Avatar, Divider, ListItemAvatar, ListItemText, ListItemButton, ListItemSecondaryAction, Typography } from '@mui/material';
+import { Avatar, Divider, ListItemAvatar, ListItemText, ListItemButton, ListItemSecondaryAction, Typography, ListItem, Button } from '@mui/material';
 import React from 'react';
 import Title from './Title';
 
@@ -6,7 +6,8 @@ const UpcomingAppointmentListView = ({appointmentInfo}) => {
     // TODO: Avatar icon
     return (
       <>
-        <ListItemButton >
+      {console.log("appoint info: " , appointmentInfo)}
+        <ListItem >
           <ListItemAvatar>
               <Avatar
                 sx={{
@@ -14,20 +15,21 @@ const UpcomingAppointmentListView = ({appointmentInfo}) => {
                     bgcolor: 'primary.lighter'
                 }}
               >
-                  C
+                  Test
               </Avatar>
           </ListItemAvatar>
-          <ListItemText
+          <div>
+          <ListItemText 
             primary={`You have a visit on ${appointmentInfo.date} at ${appointmentInfo.startTime}`}
             secondary={`with ${appointmentInfo.dentist.firstName} ${appointmentInfo.dentist.lastName}`}
           />
           <ListItemSecondaryAction>
               <Typography variant="caption" noWrap>
-                 <button>Confirm Appointment</button>
-                 <button>Cancel Appointment</button>
+                 <Button sx={{ display: { xs: 'none', sm: 'inline-flex' } }}>Cancel Appointment</Button>
               </Typography>
           </ListItemSecondaryAction>
-        </ListItemButton>
+          </div>
+        </ListItem>
         <Divider />
       </>
     )
@@ -39,9 +41,7 @@ export default function UpcomingAppointments( {upcomingApt} ) {
     <React.Fragment>
       <Title>Upcoming Appointments</Title>
       {upcomingApt.data.map((appointment, idx) => 
-      <div key={idx}>
-        <UpcomingAppointmentListView  appointmentInfo={appointment} />
-      </div>)
+        <UpcomingAppointmentListView  key={idx} appointmentInfo={appointment} />)
       }
       
     </React.Fragment>

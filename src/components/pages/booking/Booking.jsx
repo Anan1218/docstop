@@ -194,11 +194,11 @@ const Booking = () => {
     <ThemeProvider theme={mdTheme}>
       <Box style={{ backgroundColor: "#FFFFFF", padding: "1em" }}>
         <Container style={{marginTop: "2.5em"}}>
-          <Grid container style={{ marginBottom: "2em" }}>
-            <Grid item xs={3.75}>
+          <Grid container style={{ marginBottom: "2em" }} spacing={2}>
+            <Grid item xs={12} sm={6} md={4}>
             <DropdownSearch />
             </Grid>
-            <Grid item xs={2.6}>
+            <Grid item xs={12} sm={6} md={4}>
               <TextField
                 placeholder="city, state, or zip code"
                 InputProps={{
@@ -209,7 +209,7 @@ const Booking = () => {
                   ),
                 }}
                 variant="outlined"
-                style={{ width: "14em" }}
+                style={{ width: "100%" }}
               />
             </Grid>
             <Grid item>
