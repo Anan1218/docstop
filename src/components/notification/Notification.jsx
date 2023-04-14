@@ -119,13 +119,13 @@ const Notification = () => {
     const fetchMoreDataInHistory = async () => {
         let lastDate = new Date(notifContents[notifContents.length - 1].createdAt);
         lastDate.setMinutes(lastDate.getMinutes() - lastDate.getTimezoneOffset());
-        console.log(lastDate.toISOString());
+        // console.log(lastDate.toISOString());
         let queryUrl = `${import.meta.env.VITE_BACKEND_URL}/api/notification?dateTimeBefore=${lastDate.toISOString()}`;
         const res = await fetch(queryUrl, {
             method: 'GET',
             credentials: 'include',
         }).then(r => r.json());
-        console.log(res);
+        // console.log(res);
 
         const originalContent = [...notifContents];
         if (originalContent[originalContent.length - 1].id === res.data[0].id)
@@ -140,7 +140,7 @@ const Notification = () => {
         let timerHandler;
 
         const fetchNotification = async (lastTime) => {
-            if (lastTime) console.log("Getting notification at: " + lastTime.toISOString());
+            // if (lastTime) console.log("Getting notification at: " + lastTime.toISOString());
             let queryUrl = `${import.meta.env.VITE_BACKEND_URL}/api/notification`;
             if (lastTime !== null) {
                 queryUrl += `?dateTimeAfter=${lastTime.toISOString()}`
@@ -151,7 +151,7 @@ const Notification = () => {
             }).then(r => r.json());
 
             // Update data
-            console.log(res.data);
+            // console.log(res.data);
             if (res.data.length > 0) {
                 setNotifContents(content => [...res.data, ...content])
             }

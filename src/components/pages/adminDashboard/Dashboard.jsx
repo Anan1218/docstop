@@ -20,7 +20,7 @@ import { useEffect } from 'react';
 import Badges from './Badges';
 import Welcome from './Welcome';
 import SignOut from '../../accounts/signout/SignOut';
-import Calender from './Calender';
+import Calender from '../schedule/index';
 import Notification from '../../notification/Notification';
 
 function Copyright(props) {

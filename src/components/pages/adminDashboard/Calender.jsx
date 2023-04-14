@@ -28,7 +28,7 @@ const schedulerData = [
 
 export default function Calender() {
   const [age, setAge] = useState(0);
-  const [curDate, setCurDate] = useState('2018-11-01');
+  const [curDate, setCurDate] = useState(new Date().toLocaleDateString());
 
   const handleChange = (event) => {
     setAge(event.target.value);

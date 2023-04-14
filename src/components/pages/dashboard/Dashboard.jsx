@@ -88,7 +88,8 @@ function DashboardContent() {
   const [open, setOpen] = useState(true);
   const [userInfo, setInfo] = useState('');
   const [upcomingApt, setUpcomingApt] = useState({});
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
+  const [loadingDelete, setLoadingDelete] = useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -126,7 +127,7 @@ function DashboardContent() {
     // make sure to catch any error
     .catch(console.error);
 
-  }, [])
+  }, [loadingDelete])
 
   if(loading){
     return <h1>Loading...</h1>
@@ -234,7 +235,7 @@ function DashboardContent() {
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <UpcomingAppointments upcomingApt={upcomingApt}/>
+                <UpcomingAppointments upcomingApt={upcomingApt} setLoadingDelete={setLoadingDelete} loadingDelete={loadingDelete}/>
                 </Paper>
               </Grid>
             </Grid>
