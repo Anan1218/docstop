@@ -61,7 +61,7 @@ export default function Main() {
                             }}
                             id="bookNow"
                         >
-                            Book Now
+                            Join The Waitlist
                         </button>
                         {/* <button id="learnMore">Learn More</button> */}
                     </div>
