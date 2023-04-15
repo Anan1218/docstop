@@ -99,11 +99,6 @@ export default function Main() {
                         </div>
                     </div>
                     <div id="infoStages">
-                        <h1>D</h1>
-                        <img
-                            src="https://cdn-icons-png.flaticon.com/512/159/159666.png"
-                            alt="Arrow"
-                        />
                         <button
                             onClick={() => stageClicked(0)}
                             className={`${
